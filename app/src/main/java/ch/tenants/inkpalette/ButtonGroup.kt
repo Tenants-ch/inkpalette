@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import ch.tenants.inkpalette.databinding.FragmentSecondBinding
 
-class ColorButtons : Fragment() {
+class ButtonGroup : Fragment() {
 
     private var _binding: FragmentSecondBinding? = null
 
