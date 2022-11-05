@@ -47,6 +47,7 @@ class GridAdapter(
         binding.mainButton.text = collectable.name
         binding.mainButton.icon = collectable.icon
         binding.mainButton.setBackgroundColor(collectable.color)
+        binding.number.text = collectable.collected.toString()
         return view
     }
 }
