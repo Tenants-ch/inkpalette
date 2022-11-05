@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import ch.tenants.inkpalette.databinding.ButtonGroupBinding
+import com.google.android.material.snackbar.Snackbar
 
 class GridAdapter(
     var collectables: MutableList<Collectable>,
@@ -44,9 +45,13 @@ class GridAdapter(
             _binding = bindings[view]
         }
         val collectable = getItem(index) //get the data for this index
-        binding.mainButton.text = collectable.name
-        binding.mainButton.icon = collectable.icon
-        binding.mainButton.setBackgroundColor(collectable.color)
+        binding.buttonMain.text = collectable.name
+        binding.buttonMain.icon = collectable.icon
+        binding.buttonMain.setBackgroundColor(collectable.color)
+        binding.buttonInfo.setOnClickListener { view ->
+            Snackbar.make(view, collectable.info, Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show()
+        }
         binding.number.text = collectable.collected.toString()
         return view
     }
