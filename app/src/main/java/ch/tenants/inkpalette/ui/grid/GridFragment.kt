@@ -32,8 +32,6 @@ class GridFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val homeViewModel =
-            ViewModelProvider(this).get(GridViewModel::class.java)
 
         val data = mutableListOf(
             Collectable(name = "Collected Diamonds", icon = resources.getDrawable(R.drawable.ic_baseline_keyboard_double_arrow_up_24, null), color = Color.BLUE,1, info = "Upgrade this will Double to production of your Blue color"),
