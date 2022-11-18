@@ -3,7 +3,6 @@ package ch.tenants.inkpalette.ui.grid
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
 import ch.tenants.inkpalette.ui.model.Collectable
 

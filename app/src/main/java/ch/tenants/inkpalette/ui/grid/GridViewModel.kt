@@ -21,6 +21,7 @@ class GridViewModel(application: Application, section: Int) : AndroidViewModel(a
 class GridViewModelFactory(private val mApplication: Application, private val section: Int) :
     ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
+        @Suppress("UNCHECKED_CAST")
         return GridViewModel(mApplication, section) as T
     }
 }

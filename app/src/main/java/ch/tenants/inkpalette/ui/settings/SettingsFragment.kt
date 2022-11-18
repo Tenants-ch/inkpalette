@@ -6,22 +6,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ch.tenants.inkpalette.R
-import ch.tenants.inkpalette.databinding.FragmentSettingsBinding
 import ch.tenants.inkpalette.data.CollectableEntity
 import ch.tenants.inkpalette.data.CollectableRepository
 import ch.tenants.inkpalette.data.getDatabase
+import ch.tenants.inkpalette.databinding.FragmentSettingsBinding
 import ch.tenants.inkpalette.ui.grid.GridReviewAdapter
 import ch.tenants.inkpalette.ui.grid.GridViewModel
 import ch.tenants.inkpalette.ui.grid.GridViewModelFactory
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class SettingsFragment : Fragment() {
 
@@ -36,10 +31,9 @@ class SettingsFragment : Fragment() {
             "You can only access the viewModel after onActivityCreated()"
         }
         val section = arguments?.getInt("section") ?: 1
-        ViewModelProvider(this, GridViewModelFactory(activity.application, section))
-            .get(GridViewModel::class.java)
+        ViewModelProvider(this, GridViewModelFactory(activity.application, section))[GridViewModel::class.java]
     }
-    lateinit var adapter: GridReviewAdapter
+    private lateinit var adapter: GridReviewAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,9 +51,9 @@ class SettingsFragment : Fragment() {
         adapter = GridReviewAdapter()
         recyclerView.adapter = adapter
         recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
-        viewModel.collectableLiveData.observe(viewLifecycleOwner, Observer {
+        viewModel.collectableLiveData.observe(viewLifecycleOwner) {
             adapter.collectables = it
-        })
+        }
 
 
 /*
@@ -76,7 +70,7 @@ class SettingsFragment : Fragment() {
         _binding = null
     }
 
-    suspend fun insertUsers() {
+    fun insertUsers() {
         collectableRepository?.insertAll(
             CollectableEntity(
                 name = "Collected BLUE",

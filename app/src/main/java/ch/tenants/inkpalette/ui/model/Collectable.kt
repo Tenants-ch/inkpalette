@@ -16,7 +16,7 @@ class Collectable(
 ) {
 
     fun tick() {
-        count++;
+        count++
     }
 
     fun asDatabaseModel(): CollectableEntity {

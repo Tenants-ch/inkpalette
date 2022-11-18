@@ -8,10 +8,10 @@ import android.widget.BaseAdapter
 import ch.tenants.inkpalette.databinding.StatisticCellBinding
 
 class StatisticsAdapter(
-    var statistics: MutableList<Statistic>,
+    private var statistics: MutableList<Statistic>,
     val context: Context
 ) : BaseAdapter() {
-    var layoutInflater: LayoutInflater = LayoutInflater.from(context)
+    private var layoutInflater: LayoutInflater = LayoutInflater.from(context)
     private var _binding: StatisticCellBinding? = null
     private val binding get() = _binding!!
     private var bindings = mutableMapOf<View, StatisticCellBinding>()
@@ -21,7 +21,7 @@ class StatisticsAdapter(
     }
 
     override fun getItem(index: Int): Statistic { //item at index
-        return statistics.get(index)
+        return statistics[index]
     }
 
     override fun getItemId(index: Int): Long { //itemId for index
@@ -32,7 +32,7 @@ class StatisticsAdapter(
         index: Int, oldView: View?,
         viewGroup: ViewGroup?
     ): View {
-        var view: View
+        val view: View
         if (oldView == null) { //check if we get a view to recycle
             _binding = StatisticCellBinding.inflate(
                 layoutInflater,

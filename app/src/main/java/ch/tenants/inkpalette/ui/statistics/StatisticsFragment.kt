@@ -1,14 +1,10 @@
 package ch.tenants.inkpalette.ui.statistics
 
-import android.R
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import ch.tenants.inkpalette.databinding.FragmentStatisticsBinding
 
 class StatisticsFragment : Fragment() {
@@ -34,7 +30,7 @@ class StatisticsFragment : Fragment() {
             Statistic(name = "Upgraded Items", value = 6)
         )
 
-        val adapter = StatisticsAdapter(data, this.requireContext());
+        val adapter = StatisticsAdapter(data, this.requireContext())
 
         _binding = FragmentStatisticsBinding.inflate(inflater, container, false)
         val root: View = binding.root

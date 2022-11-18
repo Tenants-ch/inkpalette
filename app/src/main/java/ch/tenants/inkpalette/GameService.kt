@@ -5,19 +5,18 @@ import android.content.Intent
 import android.os.IBinder
 import android.util.Log
 import ch.tenants.inkpalette.data.CollectableRepository
-import ch.tenants.inkpalette.data.asDomainModel
 import ch.tenants.inkpalette.data.getDatabase
 
 class GameService : Service() {
 
-    var running: Boolean = true
+    private var running: Boolean = true
     private var collectableRepository: CollectableRepository? = null
 
 
-    fun run() {
+    private fun run() {
         var count = 0
         while (running && count <= 199999) {
-            var all = collectableRepository?.getAllSynced()
+            val all = collectableRepository?.getAllSynced()
             all?.filter { it.unlocked }?.forEach { collectable ->
                 collectable.tick()
                 collectableRepository?.updateCollectable(collectable.asDatabaseModel())
@@ -31,11 +30,11 @@ class GameService : Service() {
     // execution of service will start
     // on calling this method
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
-        Thread(Runnable {
+        Thread {
             // a potentially time consuming task
             collectableRepository = CollectableRepository(getDatabase(application))
             run()
-        }).start()
+        }.start()
         // returns the status
         // of the program
         return START_STICKY
