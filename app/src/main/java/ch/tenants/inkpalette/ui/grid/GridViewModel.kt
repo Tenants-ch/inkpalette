@@ -1,24 +1,26 @@
 package ch.tenants.inkpalette.ui.grid
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import ch.tenants.inkpalette.Game
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import android.app.Application
+import androidx.lifecycle.*
+import androidx.lifecycle.viewmodel.CreationExtras
+import ch.tenants.inkpalette.data.CollectableRepository
+import ch.tenants.inkpalette.data.getDatabase
+import ch.tenants.inkpalette.ui.model.Collectable
 
-class GridViewModel : ViewModel() {
 
-    private val game: Game = TODO();
+class GridViewModel(application: Application, section: Int) : AndroidViewModel(application) {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is grid Fragment"
-    }
-    val text: LiveData<String> = _text
-    fun runGame() {
-        viewModelScope.launch(Dispatchers.IO) {
-            game.run()
-        }
+    private var collectableRepository: CollectableRepository =
+        CollectableRepository(getDatabase(application))
+    var collectableLiveData: LiveData<List<Collectable>> =
+        collectableRepository.getCollectableBySection(section)
+
+
+}
+
+class GridViewModelFactory(private val mApplication: Application, private val section: Int) :
+    ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
+        return GridViewModel(mApplication, section) as T
     }
 }

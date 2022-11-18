@@ -23,4 +23,10 @@
         android:name="ch.tenants.inkpalette.ui.settings.SettingsFragment"
         android:label="@string/title_settings"
         tools:layout="@layout/fragment_settings" />
+
+    <fragment
+        android:id="@+id/navigation_section"
+        android:name="ch.tenants.inkpalette.ui.section.SectionFragment"
+        android:label="@string/title_settings"
+        tools:layout="@layout/fragment_section" />
 </navigation>

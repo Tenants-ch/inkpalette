@@ -1,7 +1,8 @@
-package ch.tenants.inkpalette.ui.settings
+package ch.tenants.inkpalette.ui.section
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +10,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ch.tenants.inkpalette.R
@@ -20,10 +20,8 @@ import ch.tenants.inkpalette.data.getDatabase
 import ch.tenants.inkpalette.ui.grid.GridReviewAdapter
 import ch.tenants.inkpalette.ui.grid.GridViewModel
 import ch.tenants.inkpalette.ui.grid.GridViewModelFactory
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
-class SettingsFragment : Fragment() {
+class SectionFragment : Fragment() {
 
     private var _binding: FragmentSettingsBinding? = null
 
@@ -31,6 +29,7 @@ class SettingsFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
     private var collectableRepository: CollectableRepository? = null
+
     private val viewModel: GridViewModel by lazy {
         val activity = requireNotNull(this.activity) {
             "You can only access the viewModel after onActivityCreated()"
@@ -46,22 +45,20 @@ class SettingsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        Log.i("SectionFragement", "entered the Section Fragement")
+        val section = arguments?.getInt("section")
+        Log.i("SectionFragement", section.toString())
+
 
         _binding = FragmentSettingsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        collectableRepository =
-            CollectableRepository(getDatabase(requireContext().applicationContext))
+        // collectableRepository = CollectableRepository(getDatabase(requireContext().applicationContext))
 
         val recyclerView: RecyclerView = binding.recyclerGrid
         adapter = GridReviewAdapter()
         recyclerView.adapter = adapter
         recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
-        viewModel.collectableLiveData.observe(viewLifecycleOwner, Observer {
-            adapter.collectables = it
-        })
-
-
 /*
         lifecycleScope.launch(Dispatchers.IO) {
             collectableRepository!!.deleteAll();
@@ -69,6 +66,14 @@ class SettingsFragment : Fragment() {
         }
 */
         return root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel.collectableLiveData.observe(viewLifecycleOwner) {
+            adapter.collectables = it
+        }
+
     }
 
     override fun onDestroyView() {

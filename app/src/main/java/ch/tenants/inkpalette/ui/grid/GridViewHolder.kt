@@ -2,12 +2,15 @@ package ch.tenants.inkpalette.ui.grid
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.TextView
+import androidx.core.os.bundleOf
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import ch.tenants.inkpalette.R
+import ch.tenants.inkpalette.ui.model.Collectable
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
+
 
 class GridViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
     RecyclerView.ViewHolder(
@@ -29,12 +32,19 @@ class GridViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
     }
 
     fun bind(collectable: Collectable) {
-        mainButton?.icon = collectable.icon
+        mainButton?.setIconResource(collectable.iconResourceId)
         mainButton?.setBackgroundColor(collectable.color)
         infoButton?.setOnClickListener { view ->
-            Snackbar.make(view, collectable.info, Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+            collectable.info.let {
+                Snackbar.make(view, it, Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show()
+            }
         }
-        number?.text = collectable.collected.toString()
+        mainButton?.setOnClickListener { view ->
+            val bundle = bundleOf("section" to collectable.section+1)
+            val navController = Navigation.findNavController(view)
+            navController.navigate(R.id.navigation_section, bundle)
+        }
+        number?.text = collectable.count.toString()
     }
 }

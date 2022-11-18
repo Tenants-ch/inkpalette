@@ -9,7 +9,7 @@ import ch.tenants.inkpalette.databinding.ButtonGroupBinding
 import com.google.android.material.snackbar.Snackbar
 
 class GridAdapter(
-    var collectables: MutableList<Collectable>,
+    var collectableOldModels: MutableList<CollectableOldModel>,
     val context: Context
 ) : BaseAdapter() {
     var layoutInflater: LayoutInflater = LayoutInflater.from(context)
@@ -18,11 +18,11 @@ class GridAdapter(
     private var bindings = mutableMapOf<View, ButtonGroupBinding>()
 
     override fun getCount(): Int { //number of elements to display
-        return collectables.size
+        return collectableOldModels.size
     }
 
-    override fun getItem(index: Int): Collectable { //item at index
-        return collectables.get(index)
+    override fun getItem(index: Int): CollectableOldModel { //item at index
+        return collectableOldModels.get(index)
     }
 
     override fun getItemId(index: Int): Long { //itemId for index
@@ -48,8 +48,8 @@ class GridAdapter(
         binding.buttonMain.text = collectable.name
         binding.buttonMain.icon = collectable.icon
         binding.buttonMain.setBackgroundColor(collectable.color)
-        binding.buttonInfo.setOnClickListener { view ->
-            Snackbar.make(view, collectable.info, Snackbar.LENGTH_LONG)
+        binding.buttonInfo.setOnClickListener {
+            Snackbar.make(it, collectable.info, Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
         }
         binding.number.text = collectable.collected.toString()

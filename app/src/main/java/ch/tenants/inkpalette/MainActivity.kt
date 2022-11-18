@@ -1,5 +1,6 @@
 package ch.tenants.inkpalette
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -16,22 +17,23 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
-    private lateinit var game: Game
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        game = Game();
+
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         val navView: BottomNavigationView = binding.mainContainer.navView
 
         setSupportActionBar(binding.toolbar)
+        startService(Intent(this, GameService::class.java))
 
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
-        val appBarConfiguration = AppBarConfiguration(
+        appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.navigation_grid, R.id.navigation_statistics, R.id.navigation_settings
             )
