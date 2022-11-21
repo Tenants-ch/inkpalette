@@ -5,21 +5,29 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [CollectableEntity::class],
-    version = 1, exportSchema = false)
+@Database(
+    entities = [CollectableEntity::class],
+    version = 2, exportSchema = false
+)
 abstract class AppDatabase : RoomDatabase() {
     abstract val collectableDao: CollectableDao
-}
 
-private lateinit var INSTANCE: AppDatabase
+    companion object {
+        private lateinit var INSTANCE: AppDatabase
 
-fun getDatabase(context: Context): AppDatabase {
-    synchronized(AppDatabase::class.java) {
-        if (!::INSTANCE.isInitialized) {
-            INSTANCE = Room.databaseBuilder(context.applicationContext,
-                AppDatabase::class.java,
-                "app-database").build()
+        fun getDatabase(context: Context): AppDatabase {
+            synchronized(AppDatabase::class.java) {
+                if (!::INSTANCE.isInitialized) {
+                    INSTANCE = Room.databaseBuilder(
+                        context.applicationContext,
+                        AppDatabase::class.java,
+                        "app-database"
+                    )
+                        .fallbackToDestructiveMigration() //TODO: This has to be removed before you go to Production!!!!!
+                        .build()
+                }
+            }
+            return INSTANCE
         }
     }
-    return INSTANCE
 }

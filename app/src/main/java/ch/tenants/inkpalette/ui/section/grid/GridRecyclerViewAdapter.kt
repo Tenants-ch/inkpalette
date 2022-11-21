@@ -1,13 +1,13 @@
-package ch.tenants.inkpalette.ui.grid
+package ch.tenants.inkpalette.ui.section.grid
 
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import ch.tenants.inkpalette.ui.model.Collectable
+import ch.tenants.inkpalette.model.Collectable
 
 
-class GridReviewAdapter :
+class GridRecyclerViewAdapter :
     RecyclerView.Adapter<GridViewHolder>() {
 
     var collectables: List<Collectable> = emptyList()

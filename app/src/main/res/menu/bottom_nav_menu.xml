@@ -2,9 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/navigation_grid"
+        android:id="@+id/navigation_section"
         android:icon="@drawable/ic_baseline_grid_on_24"
-        android:title="@string/title_grid" />
+        android:title="@string/title_game" />
 
     <item
         android:id="@+id/navigation_statistics"

@@ -1,36 +1,37 @@
-package ch.tenants.inkpalette.ui.model
+package ch.tenants.inkpalette.model
 
 import ch.tenants.inkpalette.data.CollectableEntity
 
-class Collectable(
+open class Collectable(
     val id: Int,
-    val name: String,
-    val iconResourceId: Int,
-    val color: Int,
     var count: Int,
     var totalCollected: Int,
-    val info: String,
     val unlocked: Boolean,
-    val order: Int,
-    val section: Int
+    val color: Colors,
+    val section: Int = 1,
+    val worker: Worker?,
+    val upgrade: Upgrade?
 ) {
 
     fun tick() {
         count++
     }
 
+
+    fun getIconId(): Int {
+        return upgrade?.iconResourceId ?: (worker?.iconResourceId ?: color.iconResourceId)
+    }
+
     fun asDatabaseModel(): CollectableEntity {
         return CollectableEntity(
             uid = id,
-            name = name,
-            iconResourceId = iconResourceId,
-            color = color,
             count = count,
             totalCollected = totalCollected,
-            info = info,
             unlocked = unlocked,
-            order = order,
-            section = section
+            color = color,
+            section = section,
+            worker = worker,
+            upgrade = upgrade,
         )
     }
 }

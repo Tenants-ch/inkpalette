@@ -1,22 +1,26 @@
 package ch.tenants.inkpalette.ui.settings
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import ch.tenants.inkpalette.R
+import ch.tenants.inkpalette.data.AppDatabase
 import ch.tenants.inkpalette.data.CollectableEntity
 import ch.tenants.inkpalette.data.CollectableRepository
-import ch.tenants.inkpalette.data.getDatabase
 import ch.tenants.inkpalette.databinding.FragmentSettingsBinding
-import ch.tenants.inkpalette.ui.grid.GridReviewAdapter
-import ch.tenants.inkpalette.ui.grid.GridViewModel
-import ch.tenants.inkpalette.ui.grid.GridViewModelFactory
+import ch.tenants.inkpalette.model.Colors
+import ch.tenants.inkpalette.model.Upgrade
+import ch.tenants.inkpalette.model.Worker
+import ch.tenants.inkpalette.ui.section.grid.GridRecyclerViewAdapter
+import ch.tenants.inkpalette.ui.section.grid.GridViewModel
+import ch.tenants.inkpalette.ui.section.grid.GridViewModelFactory
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class SettingsFragment : Fragment() {
 
@@ -25,15 +29,19 @@ class SettingsFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+    private var startup = true
     private var collectableRepository: CollectableRepository? = null
     private val viewModel: GridViewModel by lazy {
         val activity = requireNotNull(this.activity) {
             "You can only access the viewModel after onActivityCreated()"
         }
         val section = arguments?.getInt("section") ?: 1
-        ViewModelProvider(this, GridViewModelFactory(activity.application, section))[GridViewModel::class.java]
+        ViewModelProvider(
+            this,
+            GridViewModelFactory(activity.application, section, null, null)
+        )[GridViewModel::class.java]
     }
-    private lateinit var adapter: GridReviewAdapter
+    private lateinit var adapter: GridRecyclerViewAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,10 +53,10 @@ class SettingsFragment : Fragment() {
         val root: View = binding.root
 
         collectableRepository =
-            CollectableRepository(getDatabase(requireContext().applicationContext))
+            CollectableRepository(AppDatabase.getDatabase(requireContext().applicationContext))
 
         val recyclerView: RecyclerView = binding.recyclerGrid
-        adapter = GridReviewAdapter()
+        adapter = GridRecyclerViewAdapter()
         recyclerView.adapter = adapter
         recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
         viewModel.collectableLiveData.observe(viewLifecycleOwner) {
@@ -56,12 +64,14 @@ class SettingsFragment : Fragment() {
         }
 
 
-/*
         lifecycleScope.launch(Dispatchers.IO) {
-            collectableRepository!!.deleteAll();
-            insertUsers()
+
+            if (startup) {
+                collectableRepository!!.deleteAll()
+                initGame()
+                startup = false
+            }
         }
-*/
         return root
     }
 
@@ -70,65 +80,44 @@ class SettingsFragment : Fragment() {
         _binding = null
     }
 
-    fun insertUsers() {
-        collectableRepository?.insertAll(
-            CollectableEntity(
-                name = "Collected BLUE",
-                iconResourceId = R.drawable.ic_baseline_keyboard_double_arrow_up_24,
-                color = Color.BLUE,
-                count = 1,
-                info = "Upgrade this will Double to production of your Blue color",
-                order = 1, totalCollected = 0, unlocked = true, section = 1
-            ),
-            CollectableEntity(
-                name = "Collected YELLOW",
-                iconResourceId = R.drawable.ic_baseline_keyboard_double_arrow_up_24,
-                color = Color.YELLOW,
-                count = 1,
-                info = "Upgrade this will Double to production of your Blue color",
-                order = 1, totalCollected = 0, unlocked = true, section = 1
-            ),
-            CollectableEntity(
-                name = "Collected GREEN",
-                iconResourceId = R.drawable.ic_baseline_keyboard_double_arrow_up_24,
-                color = Color.GREEN,
-                count = 1,
-                info = "Upgrade this will Double to production of your Blue color",
-                order = 1, totalCollected = 0, unlocked = true, section = 1
-            ),
-            CollectableEntity(
-                name = "Collected RED",
-                iconResourceId = R.drawable.ic_baseline_keyboard_double_arrow_up_24,
-                color = Color.RED,
-                count = 1,
-                info = "Upgrade this will Double to production of your Blue color",
-                order = 1, totalCollected = 0, unlocked = true, section = 1
-            ),
-            CollectableEntity(
-                name = "Collected CYAN",
-                iconResourceId = R.drawable.ic_baseline_keyboard_double_arrow_up_24,
-                color = Color.CYAN,
-                count = 1,
-                info = "Upgrade this will Double to production of your Blue color",
-                order = 1, totalCollected = 0, unlocked = true, section = 2
-            ),
-            CollectableEntity(
-                name = "Collected MAGENTA",
-                iconResourceId = R.drawable.ic_baseline_keyboard_double_arrow_up_24,
-                color = Color.MAGENTA,
-                count = 1,
-                info = "Upgrade this will Double to production of your Blue color",
-                order = 1, totalCollected = 0, unlocked = true, section = 2
-            ),
-            CollectableEntity(
-                name = "Collected GRAY",
-                iconResourceId = R.drawable.ic_baseline_keyboard_double_arrow_up_24,
-                color = Color.GRAY,
-                count = 1,
-                info = "Upgrade this will Double to production of your Blue color",
-                order = 1, totalCollected = 0, unlocked = true, section = 2
+    private fun initGame() {
+        AppDatabase.getDatabase(requireContext().applicationContext).clearAllTables()
+        val initGame: MutableList<CollectableEntity> = mutableListOf()
+        Colors.values().forEach { color ->
+            initGame.add(
+                CollectableEntity(
+                    unlocked = color == Colors.YELLOW,
+                    totalCollected = 0,
+                    count = 0,
+                    color = color, section = 1, worker = null, upgrade = null
+                )
             )
-        )
+            Worker.values().forEach { worker ->
+                initGame.add(
+                    CollectableEntity(
+                        unlocked = color == Colors.YELLOW && worker == Worker.PERSON,
+                        totalCollected = 0,
+                        count = 0,
+                        color = color,
+                        section = 2,
+                        worker = worker, upgrade = null
+                    )
+                )
+                Upgrade.values().filter { it.worker == worker }.forEach { upgrade ->
+                    initGame.add(
+                        CollectableEntity(
+                            unlocked = color == Colors.YELLOW && worker == Worker.PERSON && upgrade == Upgrade.HAMMER,
+                            totalCollected = 0,
+                            count = 0,
+                            color = color,
+                            section = 3,
+                            worker = worker,
+                            upgrade = upgrade
+                        )
+                    )
+                }
+            }
+        }
+        collectableRepository?.insertAll(*initGame.toTypedArray())
     }
-
 }

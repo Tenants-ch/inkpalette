@@ -1,4 +1,4 @@
-package ch.tenants.inkpalette.ui.grid
+package ch.tenants.inkpalette.ui.section.grid
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -7,9 +7,8 @@ import androidx.core.os.bundleOf
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import ch.tenants.inkpalette.R
-import ch.tenants.inkpalette.ui.model.Collectable
+import ch.tenants.inkpalette.model.Collectable
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.snackbar.Snackbar
 
 
 class GridViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
@@ -25,26 +24,34 @@ class GridViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
     private var number: TextView? = null
 
     init {
-        mainButton = itemView.findViewById(R.id.button_main);
+        mainButton = itemView.findViewById(R.id.button_main)
         infoButton = itemView.findViewById(R.id.button_info)
         upgradeButton = itemView.findViewById(R.id.button_upgrade)
         number = itemView.findViewById(R.id.number)
     }
 
     fun bind(collectable: Collectable) {
-        mainButton?.setIconResource(collectable.iconResourceId)
-        mainButton?.setBackgroundColor(collectable.color)
-        infoButton?.setOnClickListener { view ->
-            collectable.info.let {
+        mainButton?.setIconResource(collectable.getIconId())
+        mainButton?.setBackgroundColor(collectable.color.color)
+        mainButton?.isEnabled = collectable.unlocked
+        infoButton?.isEnabled = collectable.unlocked
+        upgradeButton?.isEnabled = collectable.unlocked
+        /*infoButton?.setOnClickListener { view ->
+            collectable.attribute.info.let {
                 Snackbar.make(view, it, Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
             }
-        }
+        }*/
         mainButton?.setOnClickListener { view ->
-            val bundle = bundleOf("section" to collectable.section+1)
+            val bundle = bundleOf(
+                "section" to collectable.section + 1,
+                "color" to collectable.color,
+                "worker" to collectable.worker
+            )
             val navController = Navigation.findNavController(view)
             navController.navigate(R.id.navigation_section, bundle)
         }
-        number?.text = collectable.count.toString()
+        number?.text =
+            if (collectable.unlocked) collectable.count.toString() else itemView.context.getString(R.string.locked)
     }
 }
