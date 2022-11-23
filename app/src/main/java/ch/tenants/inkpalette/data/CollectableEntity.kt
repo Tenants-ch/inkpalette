@@ -17,7 +17,14 @@ class CollectableEntity(
     @ColumnInfo(name = "color") val color: Colors,
     @ColumnInfo(name = "section") val section: Int = 1,
     @ColumnInfo(name = "worker") val worker: Worker?,
-    @ColumnInfo(name = "upgrade") val upgrade: Upgrade?
+    @ColumnInfo(name = "upgrade") val upgrade: Upgrade?,
+    @ColumnInfo(name = "storage") val storage: Int = 500,
+    @ColumnInfo(name = "ration") val ration: Int = 1000,
+    @ColumnInfo(name = "intermediateStorage") val intermediateStorage: Int = 10,
+    @ColumnInfo(name = "costToBuy") val costToBuy: Int = 10,
+    @ColumnInfo(name = "neededTicksToCollect") val neededTicksToCollect: Int = 100,
+    @ColumnInfo(name = "ticks") var ticks: Int = 0,
+    @ColumnInfo(name = "notCollectedCount") var notCollectedCount: Int = 0,
 )
 
 /**
@@ -34,6 +41,13 @@ fun List<CollectableEntity>.asDomainModel(): List<Collectable> {
             section = it.section,
             worker = it.worker,
             upgrade = it.upgrade,
+            storage = it.storage,
+            ration = it.ration,
+            intermediateStorage = it.intermediateStorage,
+            costToBuy = it.costToBuy,
+            neededTicksToCollect = it.neededTicksToCollect,
+            ticks = it.ticks,
+            notCollectedCount = it.notCollectedCount
         )
     }
 }

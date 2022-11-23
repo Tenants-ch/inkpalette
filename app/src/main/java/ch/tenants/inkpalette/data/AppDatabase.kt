@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 
 @Database(
     entities = [CollectableEntity::class],
-    version = 2, exportSchema = false
+    version = 3, exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract val collectableDao: CollectableDao

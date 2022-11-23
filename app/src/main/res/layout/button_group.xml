@@ -6,7 +6,7 @@
     android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/number"
+        android:id="@+id/countDisplay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TextView"
@@ -16,12 +16,12 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/number">
+        app:layout_constraintTop_toBottomOf="@+id/countDisplay">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/button_upgrade"
@@ -65,6 +65,24 @@
             app:iconPadding="0dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/progress_linear"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp"
+            android:progress="70"
+            app:layout_constraintTop_toBottomOf="@+id/button_main"
+            tools:layout_editor_absoluteX="0dp" />
+
+        <TextView
+            android:id="@+id/nonCollectedCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            app:layout_constraintStart_toEndOf="@+id/progress_linear"
+            app:layout_constraintTop_toBottomOf="@+id/button_upgrade" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

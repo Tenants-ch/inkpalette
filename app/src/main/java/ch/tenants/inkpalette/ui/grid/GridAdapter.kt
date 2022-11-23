@@ -52,7 +52,6 @@ class GridAdapter(
             Snackbar.make(it, collectable.info, Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
         }
-        binding.number.text = collectable.collected.toString()
         return view
     }
 }
