@@ -14,7 +14,6 @@ class GridRecyclerViewAdapter(val updateCollectable: (Collectable) -> Unit, val 
     var collectables: List<Collectable> = emptyList()
         set(value) {
             field = value
-            Log.i("GridReviewAdapter", "Set Collectables")
             notifyDataSetChanged()
         }
 

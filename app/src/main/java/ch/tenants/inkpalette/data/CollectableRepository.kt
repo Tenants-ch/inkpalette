@@ -29,7 +29,6 @@ class CollectableRepository(private val database: AppDatabase) {
         color: Colors?,
         worker: Worker?
     ): LiveData<List<Collectable>> {
-        Log.i("CollectableRepository", "section -> $section / color -> $color / worker -> $worker")
         return if (section == 3 && worker != null && color != null) {
             getCollectableByAllValues(section, color, worker)
         } else if (section == 2 && color != null) {

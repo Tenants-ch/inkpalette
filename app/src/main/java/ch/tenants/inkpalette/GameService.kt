@@ -22,7 +22,6 @@ class GameService : Service() {
                 collectableRepository?.updateCollectable(collectable)
             }
             count++
-            Log.i("GameService", "we got to the run game")
             Thread.sleep(1_000)
         }
     }

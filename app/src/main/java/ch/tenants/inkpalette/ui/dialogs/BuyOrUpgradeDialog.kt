@@ -36,9 +36,6 @@ class BuyOrUpgradeDialog(val collectable: Collectable, val action: Action) : Dia
     // Use this instance of the interface to deliver action events
     internal lateinit var listener: BuyDialogListener
 
-    /* The activity that creates an instance of this dialog fragment must
-     * implement this interface in order to receive event callbacks.
-     * Each method passes the DialogFragment in case the host needs to query it. */
     interface BuyDialogListener {
         fun onDialogPositiveClick(dialog: DialogFragment, collectable: Collectable, action: Action)
         fun onDialogNegativeClick(dialog: DialogFragment)
@@ -55,7 +52,7 @@ class BuyOrUpgradeDialog(val collectable: Collectable, val action: Action) : Dia
             // The activity doesn't implement the interface, throw exception
             throw ClassCastException(
                 (context.toString() +
-                        " must implement NoticeDialogListener")
+                        " must implement BuyDialogListener")
             )
         }
     }
