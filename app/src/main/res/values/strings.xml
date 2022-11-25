@@ -16,4 +16,9 @@
     <string name="string_null">Empty_String</string>
     <string name="integer_null">Empty_Integer</string>
     <string name="locked">Locked</string>
+    <string name="start_dialog">Start Dialog</string>
+    <string name="cancel">Cancel</string>
+    <string name="buy_ink">Buy with Ink</string>
+    <string name="buy_coins">Buy with Coins</string>
+    <string name="upgrade">Upgrade</string>
 </resources>

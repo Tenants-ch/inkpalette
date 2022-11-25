@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/navigation_section"
+        android:id="@+id/navigation_settings"
         android:icon="@drawable/ic_baseline_grid_on_24"
         android:title="@string/title_game" />
 
@@ -12,7 +12,7 @@
         android:title="@string/title_stats" />
 
     <item
-        android:id="@+id/navigation_settings"
+        android:id="@+id/navigation_grid"
         android:icon="@drawable/ic_baseline_settings_24"
         android:title="@string/title_settings" />
 

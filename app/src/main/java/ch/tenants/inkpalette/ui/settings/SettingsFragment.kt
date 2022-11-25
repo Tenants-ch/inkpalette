@@ -13,9 +13,8 @@ import ch.tenants.inkpalette.data.AppDatabase
 import ch.tenants.inkpalette.data.CollectableEntity
 import ch.tenants.inkpalette.data.CollectableRepository
 import ch.tenants.inkpalette.databinding.FragmentSettingsBinding
-import ch.tenants.inkpalette.model.Colors
-import ch.tenants.inkpalette.model.Upgrade
-import ch.tenants.inkpalette.model.Worker
+import ch.tenants.inkpalette.model.*
+import ch.tenants.inkpalette.ui.dialogs.BuyOrUpgradeDialog
 import ch.tenants.inkpalette.ui.section.grid.GridRecyclerViewAdapter
 import ch.tenants.inkpalette.ui.section.grid.GridViewModel
 import ch.tenants.inkpalette.ui.section.grid.GridViewModelFactory
@@ -56,7 +55,7 @@ class SettingsFragment : Fragment() {
             CollectableRepository(AppDatabase.getDatabase(requireContext().applicationContext))
 
         val recyclerView: RecyclerView = binding.recyclerGrid
-        adapter = GridRecyclerViewAdapter()
+        adapter = GridRecyclerViewAdapter(::updateCollectable, ::showBuyOrUpgradeDialog)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
         viewModel.collectableLiveData.observe(viewLifecycleOwner) {
@@ -75,6 +74,12 @@ class SettingsFragment : Fragment() {
         return root
     }
 
+    private fun updateCollectable(collectable: Collectable) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            collectableRepository?.updateCollectable(collectable)
+        }
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
@@ -88,7 +93,7 @@ class SettingsFragment : Fragment() {
                 CollectableEntity(
                     unlocked = color == Colors.YELLOW,
                     totalCollected = 0,
-                    count = 0,
+                    quantity = 0,
                     color = color, section = 1, worker = null, upgrade = null
                 )
             )
@@ -97,7 +102,7 @@ class SettingsFragment : Fragment() {
                     CollectableEntity(
                         unlocked = color == Colors.YELLOW && worker == Worker.PERSON,
                         totalCollected = 0,
-                        count = 0,
+                        quantity = 0,
                         color = color,
                         section = 2,
                         worker = worker, upgrade = null
@@ -108,7 +113,7 @@ class SettingsFragment : Fragment() {
                         CollectableEntity(
                             unlocked = color == Colors.YELLOW && worker == Worker.PERSON && upgrade == Upgrade.HAMMER,
                             totalCollected = 0,
-                            count = 0,
+                            quantity = 0,
                             color = color,
                             section = 3,
                             worker = worker,
@@ -120,4 +125,14 @@ class SettingsFragment : Fragment() {
         }
         collectableRepository?.insertAll(*initGame.toTypedArray())
     }
+
+    fun showBuyOrUpgradeDialog(collectable: Collectable, action: Action) {
+
+        lifecycleScope.launch(Dispatchers.IO) {
+            val dialog = BuyOrUpgradeDialog(collectable, action)
+            activity?.let { dialog.show(it.supportFragmentManager, "NoticeDialogFragment") }
+        }
+
+    }
+
 }

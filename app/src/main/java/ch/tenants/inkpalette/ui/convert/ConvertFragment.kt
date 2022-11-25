@@ -6,14 +6,20 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ch.tenants.inkpalette.data.AppDatabase
 import ch.tenants.inkpalette.data.CollectableRepository
 import ch.tenants.inkpalette.databinding.FragmentSettingsBinding
+import ch.tenants.inkpalette.model.Action
+import ch.tenants.inkpalette.model.Collectable
+import ch.tenants.inkpalette.ui.dialogs.BuyOrUpgradeDialog
 import ch.tenants.inkpalette.ui.section.grid.GridRecyclerViewAdapter
 import ch.tenants.inkpalette.ui.section.grid.GridViewModel
 import ch.tenants.inkpalette.ui.section.grid.GridViewModelFactory
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class ConvertFragment : Fragment() {
 
@@ -30,7 +36,7 @@ class ConvertFragment : Fragment() {
         val section = arguments?.getInt("section") ?: 1
         ViewModelProvider(
             this,
-            GridViewModelFactory(activity.application, section,null, null)
+            GridViewModelFactory(activity.application, section, null, null)
         )[GridViewModel::class.java]
     }
     private lateinit var adapter: GridRecyclerViewAdapter
@@ -48,7 +54,7 @@ class ConvertFragment : Fragment() {
             CollectableRepository(AppDatabase.getDatabase(requireContext().applicationContext))
 
         val recyclerView: RecyclerView = binding.recyclerGrid
-        adapter = GridRecyclerViewAdapter()
+        adapter = GridRecyclerViewAdapter(::updateCollectable, ::showBuyOrUpgradeDialog)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
         viewModel.collectableLiveData.observe(viewLifecycleOwner) {
@@ -64,4 +70,17 @@ class ConvertFragment : Fragment() {
         _binding = null
     }
 
+
+    private fun updateCollectable(collectable: Collectable) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            collectableRepository?.updateCollectable(collectable)
+        }
+    }
+
+
+    fun showBuyOrUpgradeDialog(collectable: Collectable, action: Action) {
+        // Create an instance of the dialog fragment and show it
+        val dialog = BuyOrUpgradeDialog(collectable, action)
+        activity?.let { dialog.show(it.supportFragmentManager, "NoticeDialogFragment") }
+    }
 }

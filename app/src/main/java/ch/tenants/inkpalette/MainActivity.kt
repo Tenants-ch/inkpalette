@@ -2,24 +2,36 @@ package ch.tenants.inkpalette
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
-import android.view.Menu
-import android.view.MenuItem
 import androidx.navigation.ui.setupWithNavController
+import ch.tenants.inkpalette.data.AppDatabase
+import ch.tenants.inkpalette.data.CollectableRepository
 import ch.tenants.inkpalette.databinding.ActivityMainBinding
+import ch.tenants.inkpalette.model.Action
+import ch.tenants.inkpalette.model.Collectable
+import ch.tenants.inkpalette.ui.dialogs.BuyOrUpgradeDialog
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), BuyOrUpgradeDialog.BuyDialogListener {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
+    private var collectableRepository: CollectableRepository? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        collectableRepository = CollectableRepository(AppDatabase.getDatabase(applicationContext))
 
 
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -35,7 +47,7 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_section, R.id.navigation_statistics, R.id.navigation_settings
+                R.id.navigation_settings, R.id.navigation_statistics, R.id.navigation_grid
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -60,7 +72,18 @@ class MainActivity : AppCompatActivity() {
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
-        return navController.navigateUp(appBarConfiguration)
-                || super.onSupportNavigateUp()
+        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+
+    override fun onDialogPositiveClick(
+        dialog: DialogFragment, collectable: Collectable, action: Action
+    ) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            collectableRepository?.performActionOnCollectable(collectable, action)
+        }
+    }
+
+    override fun onDialogNegativeClick(dialog: DialogFragment) {
+
     }
 }

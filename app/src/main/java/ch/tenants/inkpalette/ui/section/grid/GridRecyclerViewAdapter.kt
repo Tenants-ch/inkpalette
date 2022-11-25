@@ -4,10 +4,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import ch.tenants.inkpalette.model.Action
 import ch.tenants.inkpalette.model.Collectable
 
 
-class GridRecyclerViewAdapter :
+class GridRecyclerViewAdapter(val updateCollectable: (Collectable) -> Unit, val confirmAction: (Collectable, Action) -> Unit) :
     RecyclerView.Adapter<GridViewHolder>() {
 
     var collectables: List<Collectable> = emptyList()
@@ -22,7 +23,7 @@ class GridRecyclerViewAdapter :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int)
             : GridViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        return GridViewHolder(inflater, parent)
+        return GridViewHolder(inflater, parent, updateCollectable, confirmAction)
     }
 
     override fun onBindViewHolder(

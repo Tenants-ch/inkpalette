@@ -48,7 +48,7 @@ class GridAdapter(
         binding.buttonMain.text = collectable.name
         binding.buttonMain.icon = collectable.icon
         binding.buttonMain.setBackgroundColor(collectable.color)
-        binding.buttonInfo.setOnClickListener {
+        binding.buttonCollect.setOnClickListener {
             Snackbar.make(it, collectable.info, Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
         }
