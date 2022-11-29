@@ -29,7 +29,7 @@ interface CollectableDao {
     @Query("SELECT * FROM collectable WHERE section = 2 AND color LIKE :color AND worker LIKE :worker")
     fun getCollectable(color: Colors, worker: Worker): CollectableEntity
 
-    @Query("SELECT * FROM collectable WHERE section = 2 AND color LIKE :color AND worker LIKE :worker AND upgrade LIKE :upgrade")
+    @Query("SELECT * FROM collectable WHERE section = 3 AND color LIKE :color AND worker LIKE :worker AND upgrade LIKE :upgrade")
     fun getCollectable(color: Colors, worker: Worker, upgrade: Upgrade): CollectableEntity
 
     @Query(

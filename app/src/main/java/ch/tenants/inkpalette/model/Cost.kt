@@ -20,13 +20,21 @@ open class UpgradeCostModel(quantity: Int, val upgrade: Upgrade, colors: Colors?
     CostModel(quantity, colors)
 
 open class RealCost(val quantity: Int, val colors: Colors) {
-
+    open fun getCostIcon(): Int {
+        return colors.iconResourceId
+    }
 }
 
 open class WorkerCost(quantity: Int, colors: Colors, val worker: Worker) :
     RealCost(quantity, colors) {
-
+    override fun getCostIcon(): Int {
+        return worker.iconResourceId
+    }
 }
 
 class UpgradeCost(quantity: Int, colors: Colors, worker: Worker, val upgrade: Upgrade) :
-    WorkerCost(quantity, colors, worker)
+    WorkerCost(quantity, colors, worker) {
+    override fun getCostIcon(): Int {
+        return upgrade.iconResourceId
+    }
+}

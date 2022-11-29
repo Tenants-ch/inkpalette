@@ -1,4 +1,4 @@
-package ch.tenants.inkpalette.ui.section.grid
+package ch.tenants.inkpalette.ui.ink
 
 import android.content.res.ColorStateList
 import android.view.LayoutInflater
@@ -75,7 +75,10 @@ class GridViewHolder(
             confirmAction(collectable, Action.UPGRADE)
         }
         mainButton?.setOnClickListener { view ->
-            if (collectable.unlocked) {
+            if (collectable.upgrade?.navigation != null) {
+                val navController = Navigation.findNavController(view)
+                navController.navigate(collectable.upgrade.navigation)
+            } else if (collectable.unlocked) {
                 val bundle = bundleOf(
                     "section" to collectable.section + 1,
                     "color" to collectable.color.ordinal,
@@ -84,7 +87,7 @@ class GridViewHolder(
                 val navController = Navigation.findNavController(view)
                 navController.navigate(R.id.navigation_section, bundle)
             } else {
-                confirmAction(collectable, Action.BUY)
+                confirmAction(collectable, Action.UNLOCK)
             }
         }
         collectButton?.setOnClickListener {
@@ -107,7 +110,7 @@ class GridViewHolder(
             collectButton?.setIconResource(R.drawable.ic_baseline_color_lens_24)
             upgradeButton?.setIconResource(R.drawable.ic_baseline_keyboard_double_arrow_up_24)
         } else {
-            mainButton?.setIconResource(R.drawable.ic_baseline_currency_ruble_24)
+            mainButton?.setIconResource(R.drawable.ic_baseline_lock_open_24)
             collectButton?.setIconResource(R.drawable.ic_baseline_lock_24)
             upgradeButton?.setIconResource(R.drawable.ic_baseline_lock_24)
         }

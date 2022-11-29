@@ -20,13 +20,20 @@
 
     <fragment
         android:id="@+id/navigation_settings"
-        android:name="ch.tenants.inkpalette.ui.settings.SettingsFragment"
-        android:label="@string/title_settings"
-        tools:layout="@layout/fragment_settings" />
+        android:name="ch.tenants.inkpalette.ui.ink.InkFragment"
+        android:label="@string/ink"
+        tools:layout="@layout/fragment_ink" />
 
     <fragment
         android:id="@+id/navigation_section"
-        android:name="ch.tenants.inkpalette.ui.section.SectionFragment"
-        android:label="@string/title_game"
-        tools:layout="@layout/fragment_section" />
+        android:name="ch.tenants.inkpalette.ui.ink.SectionFragment"
+        android:label="@string/section"
+        tools:layout="@layout/fragment_ink" />
+
+
+    <fragment
+        android:id="@+id/navigation_not_yet"
+        android:name="ch.tenants.inkpalette.ui.not_yet_implemented.NotYetFragment"
+        android:label="@string/not_yet_implemented"
+        tools:layout="@layout/fragment_not_yet" />
 </navigation>

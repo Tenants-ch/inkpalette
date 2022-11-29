@@ -20,7 +20,7 @@ class CollectableEntity(
     @ColumnInfo(name = "upgrade") val upgrade: Upgrade?,
     @ColumnInfo(name = "storage") val storage: Int = 500,
     @ColumnInfo(name = "ration") val ration: Int = 1000,
-    @ColumnInfo(name = "level") var level: Int = 0,
+    @ColumnInfo(name = "level") var level: Int = 1,
     @ColumnInfo(name = "intermediateStorage") val intermediateStorage: Int = 10,
     @ColumnInfo(name = "costToBuy") val costToBuy: Int = 10,
     @ColumnInfo(name = "neededTicksToCollect") val neededTicksToCollect: Int = 10,

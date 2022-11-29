@@ -1,7 +1,6 @@
-package ch.tenants.inkpalette.ui.section
+package ch.tenants.inkpalette.ui.ink
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,21 +11,18 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ch.tenants.inkpalette.data.AppDatabase
 import ch.tenants.inkpalette.data.CollectableRepository
-import ch.tenants.inkpalette.databinding.FragmentSettingsBinding
+import ch.tenants.inkpalette.databinding.FragmentInkBinding
 import ch.tenants.inkpalette.model.Action
 import ch.tenants.inkpalette.model.Collectable
 import ch.tenants.inkpalette.model.Colors
 import ch.tenants.inkpalette.model.Worker
 import ch.tenants.inkpalette.ui.dialogs.BuyOrUpgradeDialog
-import ch.tenants.inkpalette.ui.section.grid.GridRecyclerViewAdapter
-import ch.tenants.inkpalette.ui.section.grid.GridViewModel
-import ch.tenants.inkpalette.ui.section.grid.GridViewModelFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class SectionFragment : Fragment() {
 
-    private var _binding: FragmentSettingsBinding? = null
+    private var _binding: FragmentInkBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -54,16 +50,8 @@ class SectionFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        Log.i("SectionFragement", "entered the Section Fragement")
-        val section = arguments?.getInt("section")
-        val color = arguments?.getString("color")
-        val worker = arguments?.getString("worker")
-        Log.i("SectionFragement", section.toString())
-        Log.i("SectionFragement", worker.toString())
-        Log.i("SectionFragement", color.toString())
 
-
-        _binding = FragmentSettingsBinding.inflate(inflater, container, false)
+        _binding = FragmentInkBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         collectableRepository =

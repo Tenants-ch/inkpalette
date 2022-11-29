@@ -6,6 +6,7 @@ import WorkerCost
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
+import androidx.lifecycle.map
 import androidx.room.Transaction
 import ch.tenants.inkpalette.model.Action
 import ch.tenants.inkpalette.model.Collectable

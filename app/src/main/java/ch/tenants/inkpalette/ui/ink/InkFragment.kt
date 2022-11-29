@@ -1,4 +1,4 @@
-package ch.tenants.inkpalette.ui.settings
+package ch.tenants.inkpalette.ui.ink
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,18 +12,15 @@ import androidx.recyclerview.widget.RecyclerView
 import ch.tenants.inkpalette.data.AppDatabase
 import ch.tenants.inkpalette.data.CollectableEntity
 import ch.tenants.inkpalette.data.CollectableRepository
-import ch.tenants.inkpalette.databinding.FragmentSettingsBinding
+import ch.tenants.inkpalette.databinding.FragmentInkBinding
 import ch.tenants.inkpalette.model.*
 import ch.tenants.inkpalette.ui.dialogs.BuyOrUpgradeDialog
-import ch.tenants.inkpalette.ui.section.grid.GridRecyclerViewAdapter
-import ch.tenants.inkpalette.ui.section.grid.GridViewModel
-import ch.tenants.inkpalette.ui.section.grid.GridViewModelFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class SettingsFragment : Fragment() {
+class InkFragment : Fragment() {
 
-    private var _binding: FragmentSettingsBinding? = null
+    private var _binding: FragmentInkBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -48,7 +45,7 @@ class SettingsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        _binding = FragmentSettingsBinding.inflate(inflater, container, false)
+        _binding = FragmentInkBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         collectableRepository =

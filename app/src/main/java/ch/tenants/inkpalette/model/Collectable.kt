@@ -19,12 +19,12 @@ open class Collectable(
     val upgrade: Upgrade?,
     val storage: Int = 500,
     val ration: Int = 1000,
-    var level: Int = 0,
+    var level: Int = 1,
     val intermediateStorage: Int = 10,
     val costToBuy: Int = 10,
     val neededTicksToCollect: Int = 100,
     var ticks: Int = 0,
-    var notCollectedCount: Int = 0,
+    var notCollectedCount: Int = 0
 ) {
 
     fun tick() {
@@ -44,7 +44,7 @@ open class Collectable(
 
     fun giveCostForAction(action: Action): RealCost {
         when (action) {
-            Action.BUY -> {
+            Action.UNLOCK -> {
                 return generateCostObject(getBuyCost())
             }
             Action.UPGRADE -> {
@@ -109,7 +109,7 @@ open class Collectable(
         if (notCollectedCount >= intermediateStorage) {
             ticks = neededTicksToCollect
         } else if (ticks >= neededTicksToCollect) {
-            notCollectedCount++
+            notCollectedCount += level
             ticks = 0
         }
     }
@@ -133,7 +133,7 @@ open class Collectable(
 
     fun performAction(action: Action) {
         when (action) {
-            Action.BUY -> {
+            Action.UNLOCK -> {
                 unlocked = true
             }
             Action.UPGRADE -> {

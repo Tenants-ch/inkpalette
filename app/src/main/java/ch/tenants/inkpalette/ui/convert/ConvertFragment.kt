@@ -11,19 +11,19 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ch.tenants.inkpalette.data.AppDatabase
 import ch.tenants.inkpalette.data.CollectableRepository
-import ch.tenants.inkpalette.databinding.FragmentSettingsBinding
+import ch.tenants.inkpalette.databinding.FragmentInkBinding
 import ch.tenants.inkpalette.model.Action
 import ch.tenants.inkpalette.model.Collectable
 import ch.tenants.inkpalette.ui.dialogs.BuyOrUpgradeDialog
-import ch.tenants.inkpalette.ui.section.grid.GridRecyclerViewAdapter
-import ch.tenants.inkpalette.ui.section.grid.GridViewModel
-import ch.tenants.inkpalette.ui.section.grid.GridViewModelFactory
+import ch.tenants.inkpalette.ui.ink.GridRecyclerViewAdapter
+import ch.tenants.inkpalette.ui.ink.GridViewModel
+import ch.tenants.inkpalette.ui.ink.GridViewModelFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class ConvertFragment : Fragment() {
 
-    private var _binding: FragmentSettingsBinding? = null
+    private var _binding: FragmentInkBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -47,7 +47,7 @@ class ConvertFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        _binding = FragmentSettingsBinding.inflate(inflater, container, false)
+        _binding = FragmentInkBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         collectableRepository =

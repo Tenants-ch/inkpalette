@@ -1,4 +1,4 @@
-package ch.tenants.inkpalette.ui.section.grid
+package ch.tenants.inkpalette.ui.ink
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel

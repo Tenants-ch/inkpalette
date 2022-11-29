@@ -4,7 +4,7 @@
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
+    <string name="next">Next @ Dort</string>
     <string name="previous">Previous</string>
 
     <string name="hello_first_fragment">Hello first fragment</string>
@@ -21,4 +21,14 @@
     <string name="buy_ink">Buy with Ink</string>
     <string name="buy_coins">Buy with Coins</string>
     <string name="upgrade">Upgrade</string>
+    <string name="spend_quantity_icon">Spend %1$d @</string>
+    <string name="unlock">Unlock</string>
+    <string name="convert">Convert</string>
+    <string name="convert_ink">Convert with Ink</string>
+    <string name="upgrade_ink">Upgrade with Ink</string>
+    <string name="unlock_ink">Unlock with Ink</string>
+    <string name="section">Section</string>
+    <string name="not_yet_implemented">Not Yet Implemented</string>
+    <string name="not_yet_implemented_message">This Mini Game has not yet been implemented. Wait for Future Releases!</string>
+    <string name="ink">Ink</string>
 </resources>

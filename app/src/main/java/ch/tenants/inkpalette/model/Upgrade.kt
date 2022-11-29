@@ -10,7 +10,8 @@ enum class Upgrade(
     val order: Int,
     val iconResourceId: Int,
     val upgradeCost: CostModel,
-    var buyCost: CostModel? = null
+    var buyCost: CostModel? = null,
+    var navigation: Int = R.id.navigation_not_yet
 ) {
     HAMMER(
         worker = Worker.PERSON,
