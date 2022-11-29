@@ -75,17 +75,19 @@ class GridViewHolder(
             confirmAction(collectable, Action.UPGRADE)
         }
         mainButton?.setOnClickListener { view ->
-            if (collectable.upgrade?.navigation != null) {
-                val navController = Navigation.findNavController(view)
-                navController.navigate(collectable.upgrade.navigation)
-            } else if (collectable.unlocked) {
-                val bundle = bundleOf(
-                    "section" to collectable.section + 1,
-                    "color" to collectable.color.ordinal,
-                    "worker" to collectable.worker?.ordinal
-                )
-                val navController = Navigation.findNavController(view)
-                navController.navigate(R.id.navigation_section, bundle)
+            if (collectable.unlocked) {
+                if (collectable.upgrade?.navigation != null) {
+                    val navController = Navigation.findNavController(view)
+                    navController.navigate(collectable.upgrade.navigation)
+                } else {
+                    val bundle = bundleOf(
+                        "section" to collectable.section + 1,
+                        "color" to collectable.color.ordinal,
+                        "worker" to collectable.worker?.ordinal
+                    )
+                    val navController = Navigation.findNavController(view)
+                    navController.navigate(R.id.navigation_section, bundle)
+                }
             } else {
                 confirmAction(collectable, Action.UNLOCK)
             }
