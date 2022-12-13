@@ -6,17 +6,19 @@ import UpgradeCost
 import UpgradeCostModel
 import WorkerCost
 import WorkerCostModel
+import android.util.Log
+import androidx.core.os.bundleOf
+import androidx.navigation.NavController
+import ch.tenants.inkpalette.R
 import ch.tenants.inkpalette.data.CollectableEntity
 
 open class Collectable(
     val id: Int,
-    var quantity: Int,
-    var totalCollected: Int,
     var unlocked: Boolean,
-    val color: Colors,
+    val color: ColorEnum,
+    var quantity: Int = 0,
+    var totalCollected: Int = 0,
     val section: Int = 1,
-    val worker: Worker?,
-    val upgrade: Upgrade?,
     val storage: Int = 500,
     val ration: Int = 1000,
     var level: Int = 1,
@@ -24,8 +26,16 @@ open class Collectable(
     val costToBuy: Int = 10,
     val neededTicksToCollect: Int = 100,
     var ticks: Int = 0,
-    var notCollectedCount: Int = 0
+    var notCollectedCount: Int = 0,
+    var upgrades: List<Collectable> = emptyList()
 ) {
+    open fun navigate(navController: NavController){
+        val bundle = bundleOf(
+            "section" to section + 1,
+            "color" to color.ordinal
+        )
+        navController.navigate(R.id.navigation_section, bundle)
+    }
 
     fun tick() {
         ticks++
@@ -60,14 +70,14 @@ open class Collectable(
         }
     }
 
-    fun getUpgradeCost(): CostModel {
-        return upgrade?.upgradeCost ?: (worker?.upgradeCost ?: color.upgradeCost)
+    open fun getUpgradeCost(): CostModel {
+        return color.upgradeCost
     }
 
-    fun getBuyCost(): CostModel {
-        return upgrade?.buyCost ?: (worker?.buyCost ?: color.buyCost ?: (CostModel(
+    open fun getBuyCost(): CostModel {
+        return color.buyCost ?: (CostModel(
             0
-        )))
+        ))
     }
 
 
@@ -75,30 +85,30 @@ open class Collectable(
         when (costModel) {
             is UpgradeCostModel -> {
                 return UpgradeCost(
-                    quantity = costModel.quantity,
-                    colors = costModel.colors ?: color,
-                    worker = costModel.upgrade.worker,
-                    upgrade = costModel.upgrade
+                    quantity = costModel.quantity * level,
+                    colorEnum = costModel.colorEnum ?: color,
+                    workerEnum = costModel.upgradeEnum.workerEnum,
+                    upgradeEnum = costModel.upgradeEnum
                 )
             }
             is WorkerCostModel -> {
                 return WorkerCost(
-                    quantity = costModel.quantity,
-                    colors = costModel.colors ?: color,
-                    worker = costModel.worker
+                    quantity = costModel.quantity * level,
+                    colorEnum = costModel.colorEnum ?: color,
+                    workerEnum = costModel.workerEnum
                 )
             }
             else -> {
                 return RealCost(
-                    quantity = costModel.quantity,
-                    colors = costModel.colors ?: color,
+                    quantity = costModel.quantity * level,
+                    colorEnum = costModel.colorEnum ?: color,
                 )
             }
         }
     }
 
     fun getCountDisplay(): String {
-        return "$quantity  / $storage"
+        return "$quantity  / $storage UPGRADES ${upgrades.size}"
     }
 
     fun getNotCollectCountDisplay(): String {
@@ -115,6 +125,7 @@ open class Collectable(
     }
 
     fun collect() {
+        Log.i("Collectable", "Collect ${quantity}")
         quantity += notCollectedCount
         if (quantity > storage) {
             quantity = storage
@@ -122,13 +133,13 @@ open class Collectable(
         notCollectedCount = 0
     }
 
-    fun getOrder(): Int {
-        return upgrade?.order ?: (worker?.order ?: color.order)
+    open fun getOrder(): Int {
+        return color.order
     }
 
 
-    fun getIconId(): Int {
-        return upgrade?.iconResourceId ?: (worker?.iconResourceId ?: color.iconResourceId)
+    open fun getIconId(): Int {
+        return color.iconResourceId
     }
 
     fun performAction(action: Action) {
@@ -145,7 +156,8 @@ open class Collectable(
         }
     }
 
-    fun asDatabaseModel(): CollectableEntity {
+    open fun asDatabaseModel(): CollectableEntity {
+        //Log.i("Collectable", "so Saaaad ${quantity}")
         return CollectableEntity(
             uid = id,
             quantity = quantity,
@@ -153,8 +165,6 @@ open class Collectable(
             unlocked = unlocked,
             color = color,
             section = section,
-            worker = worker,
-            upgrade = upgrade,
             storage = storage,
             ration = ration,
             level = level,

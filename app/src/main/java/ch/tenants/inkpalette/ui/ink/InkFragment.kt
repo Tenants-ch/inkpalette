@@ -9,9 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import ch.tenants.inkpalette.data.AppDatabase
-import ch.tenants.inkpalette.data.CollectableEntity
-import ch.tenants.inkpalette.data.CollectableRepository
+import ch.tenants.inkpalette.data.*
 import ch.tenants.inkpalette.databinding.FragmentInkBinding
 import ch.tenants.inkpalette.model.*
 import ch.tenants.inkpalette.ui.dialogs.BuyOrUpgradeDialog
@@ -84,43 +82,43 @@ class InkFragment : Fragment() {
 
     private fun initGame() {
         AppDatabase.getDatabase(requireContext().applicationContext).clearAllTables()
-        val initGame: MutableList<CollectableEntity> = mutableListOf()
-        Colors.values().forEach { color ->
-            initGame.add(
+        ColorEnum.values().forEach { color ->
+            val colorId = collectableRepository?.insertCollectable(
                 CollectableEntity(
-                    unlocked = color == Colors.YELLOW,
+                    unlocked = color == ColorEnum.YELLOW,
                     totalCollected = 0,
                     quantity = 0,
-                    color = color, section = 1, worker = null, upgrade = null
+                    color = color, section = 1
                 )
             )
-            Worker.values().forEach { worker ->
-                initGame.add(
-                    CollectableEntity(
-                        unlocked = color == Colors.YELLOW && worker == Worker.PERSON,
+            WorkerEnum.values().forEach { worker ->
+                val workerEnumId = collectableRepository?.insertCollectable(
+                    WorkerEntity(
+                        unlocked = color == ColorEnum.YELLOW && worker == WorkerEnum.PERSON,
                         totalCollected = 0,
                         quantity = 0,
                         color = color,
                         section = 2,
-                        worker = worker, upgrade = null
+                        workerEnum = worker,
+                        parentId = colorId?.toInt()!!
                     )
                 )
-                Upgrade.values().filter { it.worker == worker }.forEach { upgrade ->
-                    initGame.add(
-                        CollectableEntity(
-                            unlocked = color == Colors.YELLOW && worker == Worker.PERSON && upgrade == Upgrade.HAMMER,
+                UpgradeEnum.values().filter { it.workerEnum == worker }.forEach { upgrade ->
+                    collectableRepository?.insertCollectable(
+                        UpgradeEntity(
+                            unlocked = color == ColorEnum.YELLOW && worker == WorkerEnum.PERSON && upgrade == UpgradeEnum.HAMMER,
                             totalCollected = 0,
                             quantity = 0,
                             color = color,
                             section = 3,
-                            worker = worker,
-                            upgrade = upgrade
+                            workerEnum = worker,
+                            upgradeEnum = upgrade,
+                            parentId = workerEnumId?.toInt()!!
                         )
                     )
                 }
             }
         }
-        collectableRepository?.insertAll(*initGame.toTypedArray())
     }
 
     fun showBuyOrUpgradeDialog(collectable: Collectable, action: Action) {

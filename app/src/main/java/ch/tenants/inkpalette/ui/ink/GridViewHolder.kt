@@ -4,7 +4,6 @@ import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
@@ -31,6 +30,7 @@ class GridViewHolder(
     private var collectButton: MaterialButton? = null
     private var upgradeButton: MaterialButton? = null
     private var number: TextView? = null
+    private var level: TextView? = null
     private var nonCollectedCount: TextView? = null
     private var progressIndicator: LinearProgressIndicator? = null
 
@@ -39,6 +39,7 @@ class GridViewHolder(
         collectButton = itemView.findViewById(R.id.button_collect)
         upgradeButton = itemView.findViewById(R.id.button_upgrade)
         number = itemView.findViewById(R.id.countDisplay)
+        level = itemView.findViewById(R.id.level)
         nonCollectedCount = itemView.findViewById(R.id.nonCollectedCount)
         progressIndicator = itemView.findViewById(R.id.progress_linear)
     }
@@ -55,6 +56,9 @@ class GridViewHolder(
             if (collectable.unlocked) collectable.getCountDisplay() else itemView.context.getString(
                 R.string.locked
             )
+
+        level?.text =
+            if (collectable.unlocked) collectable.level.toString() else ""
 
         /*
         upgradeButton?.setBackgroundDrawable(
@@ -76,18 +80,8 @@ class GridViewHolder(
         }
         mainButton?.setOnClickListener { view ->
             if (collectable.unlocked) {
-                if (collectable.upgrade?.navigation != null) {
-                    val navController = Navigation.findNavController(view)
-                    navController.navigate(collectable.upgrade.navigation)
-                } else {
-                    val bundle = bundleOf(
-                        "section" to collectable.section + 1,
-                        "color" to collectable.color.ordinal,
-                        "worker" to collectable.worker?.ordinal
-                    )
-                    val navController = Navigation.findNavController(view)
-                    navController.navigate(R.id.navigation_section, bundle)
-                }
+                val navController = Navigation.findNavController(view)
+                collectable.navigate(navController)
             } else {
                 confirmAction(collectable, Action.UNLOCK)
             }

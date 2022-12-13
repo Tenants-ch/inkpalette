@@ -67,7 +67,7 @@ class BuyOrUpgradeDialog(val collectable: Collectable, val action: Action) : Dia
         val d = resources.getDrawable(realCost.getCostIcon(), context?.theme)
         d.setBounds(0, 0, d.intrinsicWidth, d.intrinsicHeight)
         d.colorFilter = BlendModeColorFilterCompat.createBlendModeColorFilterCompat(
-            realCost.colors.color, BlendModeCompat.SRC_ATOP
+            realCost.colorEnum.color, BlendModeCompat.SRC_ATOP
         )
         val span = ImageSpan(d, ImageSpan.ALIGN_BOTTOM)
         messageString.setSpan(
