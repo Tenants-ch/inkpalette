@@ -3,6 +3,6 @@
     <string name="app_name">Ink Palette</string>
     <string name="action_settings">Einstellungen</string>
     <string name="title_stats">Statistik</string>
-    <string name="next">Next @ Dort</string>
+
     <string name="spend_quantity_icon">Bezahle %1$d @</string>
 </resources>

@@ -1,40 +1,40 @@
 import ch.tenants.inkpalette.model.CollectableType
-import ch.tenants.inkpalette.model.Colors
-import ch.tenants.inkpalette.model.Upgrade
-import ch.tenants.inkpalette.model.Worker
+import ch.tenants.inkpalette.model.ColorEnum
+import ch.tenants.inkpalette.model.UpgradeEnum
+import ch.tenants.inkpalette.model.WorkerEnum
 
 data class Cost(
     val quantity: Int,
     val costType: CollectableType,
-    val colors: Colors? = null,
-    var worker: Worker? = null,
-    var upgrade: Upgrade? = null
+    val colorEnum: ColorEnum? = null,
+    var workerEnum: WorkerEnum? = null,
+    var upgradeEnum: UpgradeEnum? = null
 )
 
-open class CostModel(val quantity: Int, val colors: Colors? = null)
+open class CostModel(var quantity: Int, val colorEnum: ColorEnum? = null)
 
-open class WorkerCostModel(quantity: Int, val worker: Worker, colors: Colors? = null) :
-    CostModel(quantity, colors)
+open class WorkerCostModel(quantity: Int, val workerEnum: WorkerEnum, colorEnum: ColorEnum? = null) :
+    CostModel(quantity, colorEnum)
 
-open class UpgradeCostModel(quantity: Int, val upgrade: Upgrade, colors: Colors?) :
-    CostModel(quantity, colors)
+open class UpgradeCostModel(quantity: Int, val upgradeEnum: UpgradeEnum, colorEnum: ColorEnum?) :
+    CostModel(quantity, colorEnum)
 
-open class RealCost(val quantity: Int, val colors: Colors) {
+open class RealCost(val quantity: Int, val colorEnum: ColorEnum) {
     open fun getCostIcon(): Int {
-        return colors.iconResourceId
+        return colorEnum.iconResourceId
     }
 }
 
-open class WorkerCost(quantity: Int, colors: Colors, val worker: Worker) :
-    RealCost(quantity, colors) {
+open class WorkerCost(quantity: Int, colorEnum: ColorEnum, val workerEnum: WorkerEnum) :
+    RealCost(quantity, colorEnum) {
     override fun getCostIcon(): Int {
-        return worker.iconResourceId
+        return workerEnum.iconResourceId
     }
 }
 
-class UpgradeCost(quantity: Int, colors: Colors, worker: Worker, val upgrade: Upgrade) :
-    WorkerCost(quantity, colors, worker) {
+class UpgradeCost(quantity: Int, colorEnum: ColorEnum, workerEnum: WorkerEnum, val upgradeEnum: UpgradeEnum) :
+    WorkerCost(quantity, colorEnum, workerEnum) {
     override fun getCostIcon(): Int {
-        return upgrade.iconResourceId
+        return upgradeEnum.iconResourceId
     }
 }

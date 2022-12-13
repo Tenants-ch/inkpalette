@@ -6,8 +6,8 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 @Database(
-    entities = [CollectableEntity::class],
-    version = 3, exportSchema = false
+    entities = [CollectableEntity::class, WorkerEntity::class, UpgradeEntity::class],
+    version = 5, exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract val collectableDao: CollectableDao

@@ -14,8 +14,8 @@ import ch.tenants.inkpalette.data.CollectableRepository
 import ch.tenants.inkpalette.databinding.FragmentInkBinding
 import ch.tenants.inkpalette.model.Action
 import ch.tenants.inkpalette.model.Collectable
-import ch.tenants.inkpalette.model.Colors
-import ch.tenants.inkpalette.model.Worker
+import ch.tenants.inkpalette.model.ColorEnum
+import ch.tenants.inkpalette.model.WorkerEnum
 import ch.tenants.inkpalette.ui.dialogs.BuyOrUpgradeDialog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -39,9 +39,9 @@ class SectionFragment : Fragment() {
         ViewModelProvider(
             this,
             GridViewModelFactory(activity.application, section = section, color = color?.let {
-                enumValues<Colors>()[it]
-            }, worker = worker?.let {
-                enumValues<Worker>()[it]
+                enumValues<ColorEnum>()[it]
+            }, workerEnum = worker?.let {
+                enumValues<WorkerEnum>()[it]
             })
         )[GridViewModel::class.java]
     }

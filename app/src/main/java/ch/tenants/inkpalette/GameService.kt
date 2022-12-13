@@ -18,8 +18,20 @@ class GameService : Service() {
     private fun run() {
         var count = 0
         while (running && count <= 199999) {
-            val all = collectableRepository?.getAllUnlocked()
-            all?.forEach { collectable ->
+            val allCollectable = collectableRepository?.getAllUnlockedCollectables()
+            allCollectable?.forEach { collectable ->
+                collectable.tick()
+                collectableRepository?.updateCollectable(collectable)
+            }
+
+            val allWorkers = collectableRepository?.getAllUnlockedWorkers()
+            allWorkers?.forEach { collectable ->
+                collectable.tick()
+                collectableRepository?.updateCollectable(collectable)
+            }
+
+            val allUpgrades = collectableRepository?.getAllUnlockedUpgrades()
+            allUpgrades?.forEach { collectable ->
                 collectable.tick()
                 collectableRepository?.updateCollectable(collectable)
             }

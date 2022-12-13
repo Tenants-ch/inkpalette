@@ -6,41 +6,72 @@ import WorkerCost
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
-import androidx.lifecycle.map
 import androidx.room.Transaction
-import ch.tenants.inkpalette.model.Action
-import ch.tenants.inkpalette.model.Collectable
-import ch.tenants.inkpalette.model.Colors
-import ch.tenants.inkpalette.model.Worker
+import ch.tenants.inkpalette.model.*
 
 class CollectableRepository(private val database: AppDatabase) {
-    fun updateCollectable(collectable: Collectable) =
-        database.collectableDao.updateCollectable(collectable.asDatabaseModel())
 
-    suspend fun insertCollectable(collectableEntity: CollectableEntity) =
+    fun getColorWithWorker(): LiveData<List<Collectable>> =
+        Transformations.map(database.collectableDao.getColorWithWorker()) {
+            it.map { colorWithWorker ->
+                mapColorWithWorker(colorWithWorker)
+            }
+        }
+
+    private fun mapColorWithWorker(colorWithWorker: ColorWithWorker): Collectable {
+        val col = colorWithWorker.collectableEntity.asDomainModel()
+        col.upgrades = colorWithWorker.upgrades.asDomainModel()
+        return col
+    }
+
+    fun getWorkerWithUpgrades(color: ColorEnum): LiveData<List<Collectable>> =
+        Transformations.map(database.collectableDao.getWorkerWithUpgrades(color)) {
+            it.map { workerWithUpgrades ->
+                mapWorkerWithUpgrades(workerWithUpgrades)
+            }
+        }
+
+    private fun mapWorkerWithUpgrades(workerWithUpgrades: WorkerWithUpgrades): Collectable {
+        val col = workerWithUpgrades.collectableEntity.asDomainModel()
+        col.upgrades = workerWithUpgrades.upgrades.asDomainModel()
+        return col
+    }
+
+    fun updateCollectable(collectable: Collectable) {
+        val ip = collectable.asDatabaseModel()
+        Log.i("CollectableRepository", "collectable ${ip}")
+        when (ip) {
+            is UpgradeEntity -> database.collectableDao.updateCollectable(ip)
+            is WorkerEntity -> database.collectableDao.updateCollectable(ip)
+            else -> database.collectableDao.updateCollectable(ip)
+        }
+    }
+
+    fun insertCollectable(collectableEntity: CollectableEntity): Long =
         database.collectableDao.insertCollectable(collectableEntity)
 
-    fun insertAll(vararg collectableEntities: CollectableEntity) =
-        database.collectableDao.insertAll(*collectableEntities)
+    fun insertCollectable(workerEntity: WorkerEntity): Long =
+        database.collectableDao.insertCollectable(workerEntity)
 
-    fun getAllSynced() = database.collectableDao.getAllSync().asDomainModel()
+    fun insertCollectable(upgradeEntity: UpgradeEntity): Long =
+        database.collectableDao.insertCollectable(upgradeEntity)
 
     fun getCollectablesByValues(
         section: Int,
-        color: Colors?,
-        worker: Worker?
+        color: ColorEnum?,
+        workerEnum: WorkerEnum?
     ): LiveData<List<Collectable>> {
-        return if (section == 3 && worker != null && color != null) {
-            getCollectableByAllValues(section, color, worker)
+        return if (section == 3 && workerEnum != null && color != null) {
+            getCollectableByAllValues(section, color, workerEnum)
         } else if (section == 2 && color != null) {
-            getCollectableBySectionAndColor(section, color)
+            getWorkerWithUpgrades(color)
         } else {
-            getCollectableBySection(1)
+            getColorWithWorker()
         }
     }
 
     fun performActionOnCollectable(collectable: Collectable, action: Action) {
-        var realCost = collectable.giveCostForAction(action)
+        val realCost = collectable.giveCostForAction(action)
         if (hasQuantityToPerformAction(collectable, action)) {
             collectable.performAction(action)
             payPriceAndUpdateCollectable(collectable, realCost)
@@ -49,34 +80,35 @@ class CollectableRepository(private val database: AppDatabase) {
 
     @Transaction
     fun payPriceAndUpdateCollectable(collectable: Collectable, realCost: RealCost) {
-        val payCollectable = when (realCost) {
+        val payCollectable: Collectable = when (realCost) {
             is UpgradeCost -> {
-                database.collectableDao.getCollectable(
-                    realCost.colors,
-                    realCost.worker,
-                    realCost.upgrade
-                )
+                database.collectableDao.getUpgrade(
+                    realCost.colorEnum,
+                    realCost.workerEnum,
+                    realCost.upgradeEnum
+                ).asDomainModel()
             }
             is WorkerCost -> {
-                database.collectableDao.getCollectable(realCost.colors, realCost.worker)
+                database.collectableDao.getWorker(realCost.colorEnum, realCost.workerEnum)
+                    .asDomainModel()
 
             }
             else -> {
-                database.collectableDao.getCollectable(realCost.colors)
+                database.collectableDao.getCollectable(realCost.colorEnum).asDomainModel()
 
             }
         }
-        payCollectable.quantity -= realCost.quantity
-        if (payCollectable.quantity >= 0) {
-            database.collectableDao.updateCollectable(payCollectable)
-            database.collectableDao.updateCollectable(collectable.asDatabaseModel())
-        }
-    }
-
-
-    fun unlockCollectable(collectable: Collectable) {
-        collectable.unlocked = true
-        if (collectable.section == 1) {
+        if (payCollectable.id == collectable.id) {
+            collectable.quantity -= realCost.quantity
+            if (collectable.quantity >= 0) {
+                updateCollectable(collectable)
+            }
+        } else {
+            payCollectable.quantity -= realCost.quantity
+            if (payCollectable.quantity >= 0) {
+                updateCollectable(payCollectable)
+                updateCollectable(collectable)
+            }
         }
     }
 
@@ -89,67 +121,56 @@ class CollectableRepository(private val database: AppDatabase) {
             is UpgradeCost -> {
                 database.collectableDao.hasEnoughUpgradeQuantity(
                     cost.quantity,
-                    cost.colors,
-                    cost.worker,
-                    cost.upgrade
+                    cost.colorEnum,
+                    cost.workerEnum,
+                    cost.upgradeEnum
                 )
             }
             is WorkerCost -> {
                 database.collectableDao.hasEnoughWorkerQuantity(
                     cost.quantity,
-                    cost.colors,
-                    cost.worker,
+                    cost.colorEnum,
+                    cost.workerEnum,
                 )
             }
             else -> {
                 database.collectableDao.hasEnoughColorQuantity(
                     cost.quantity,
-                    cost.colors
+                    cost.colorEnum
                 )
             }
         }
     }
 
-    fun getAllUnlocked(): List<Collectable> =
-        database.collectableDao.getAllUnlocked().asDomainModel()
+    fun getAllUnlockedCollectables(): List<Collectable> =
+        database.collectableDao.getAllUnlockedCollectables().asDomainModel()
 
-    fun getCollectableBySection(section: Int) =
-        Transformations.map(database.collectableDao.loadAllBySection(section)) {
-            it.asDomainModel()
-        }
+    fun getAllUnlockedWorkers(): List<WorkerCollectable> =
+        database.collectableDao.getAllUnlockedWorkers().asDomainModel()
 
-    fun getCollectableBySectionAndColor(section: Int, color: Colors): LiveData<List<Collectable>> =
-        Transformations.map(database.collectableDao.loadAllBySectionAndColor(section, color)) {
-            it.asDomainModel()
-        }
+    fun getAllUnlockedUpgrades(): List<UpgradeCollectable> =
+        database.collectableDao.getAllUnlockedUpgrades().asDomainModel()
+
 
     fun getCollectableByAllValues(
         section: Int,
-        color: Colors,
-        worker: Worker
+        color: ColorEnum,
+        workerEnum: WorkerEnum
     ): LiveData<List<Collectable>> =
-        Transformations.map(database.collectableDao.loadAllByValues(section, color, worker)) {
+        Transformations.map(
+            database.collectableDao.loadUpgradesByValues(
+                section,
+                color,
+                workerEnum
+            )
+        ) {
             it.asDomainModel()
         }
 
-    fun getCollectableByColor(color: Colors): LiveData<List<Collectable>> =
-        Transformations.map(database.collectableDao.loadAllByColor(color)) {
-            it.asDomainModel()
-        }
-
-    fun getCollectableByColorAndWorker(color: Colors, worker: Worker): LiveData<List<Collectable>> =
-        Transformations.map(database.collectableDao.loadAllByColorAndWorker(color, worker)) {
-            it.asDomainModel()
-        }
-
-    suspend fun deleteAll() {
-        database.collectableDao.getAllSync().forEach {
+    fun deleteAll() {
+        database.collectableDao.getAllCollectables().forEach {
             database.collectableDao.delete(it)
         }
     }
 
-    val collectables: LiveData<List<Collectable>> =
-        Transformations.map(database.collectableDao.getAll()) {
-            it.asDomainModel()
-        }
 }
