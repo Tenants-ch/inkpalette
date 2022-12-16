@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ch.tenants.inkpalette.model.Action
-import ch.tenants.inkpalette.model.Collectable
+import ch.tenants.inkpalette.model.collectable.Collectable
 
 
 class GridRecyclerViewAdapter(val updateCollectable: (Collectable) -> Unit, val confirmAction: (Collectable, Action) -> Unit) :

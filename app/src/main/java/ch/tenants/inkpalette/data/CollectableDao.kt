@@ -2,34 +2,19 @@ package ch.tenants.inkpalette.data
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import ch.tenants.inkpalette.model.ColorEnum
-import ch.tenants.inkpalette.model.UpgradeEnum
-import ch.tenants.inkpalette.model.WorkerEnum
-
-data class ColorWithWorker(
-    @Embedded val collectableEntity: CollectableEntity,
-    @Relation(
-        parentColumn = "uid",
-        entityColumn = "parentId"
-    )
-    val upgrades: List<WorkerEntity>
-)
-
-data class WorkerWithUpgrades(
-    @Embedded val collectableEntity: WorkerEntity,
-    @Relation(
-        parentColumn = "uid",
-        entityColumn = "parentId"
-    )
-    val upgrades: List<UpgradeEntity>
-)
+import ch.tenants.inkpalette.data.entities.CollectableEntity
+import ch.tenants.inkpalette.data.entities.UpgradeEntity
+import ch.tenants.inkpalette.data.entities.WorkerEntity
+import ch.tenants.inkpalette.model.enums.ColorEnum
+import ch.tenants.inkpalette.model.enums.UpgradeEnum
+import ch.tenants.inkpalette.model.enums.WorkerEnum
 
 @Dao
 interface CollectableDao {
 
     @Transaction
     @Query("SELECT * FROM collectable")
-    fun getColorWithWorker(): LiveData<List<ColorWithWorker>>
+    fun getColorWithWorker(): LiveData<List<ColorWithWorkers>>
 
     @Transaction
     @Query("SELECT * FROM worker WHERE worker.color LIKE :color")
@@ -69,6 +54,14 @@ interface CollectableDao {
         upgradeEnum: UpgradeEnum
     ): Boolean
 
+    @Query("SELECT EXISTS(SELECT * FROM collectable LIMIT 1)")
+    fun hasCollectables(): Boolean
+
+    @Query("SELECT EXISTS(SELECT * FROM worker LIMIT 1)")
+    fun hasWorkers(): Boolean
+
+    @Query("SELECT EXISTS(SELECT * FROM upgrade LIMIT 1)")
+    fun hasUpgrades(): Boolean
 
     @Query(
         "SELECT EXISTS(SELECT * FROM worker WHERE " +
@@ -135,5 +128,58 @@ interface CollectableDao {
 
     @Insert
     fun insertCollectable(upgradeEntity: UpgradeEntity): Long
+
+    @Query("DELETE FROM collectable")
+    fun deleteAllCollectables()
+
+    @Query("DELETE FROM worker")
+    fun deleteAllWorkers()
+
+    @Query("DELETE FROM upgrade")
+    fun deleteAllUpgrades()
+
+    @Transaction
+    fun initCollectables() {
+        deleteAllCollectables()
+        deleteAllWorkers()
+        deleteAllUpgrades()
+        ColorEnum.values().forEach { color ->
+            val colorId = insertCollectable(
+                CollectableEntity(
+                    unlocked = color == ColorEnum.YELLOW,
+                    totalCollected = 0,
+                    quantity = 0,
+                    color = color, section = 1
+                )
+            )
+            WorkerEnum.values().forEach { worker ->
+                val workerEnumId = insertCollectable(
+                    WorkerEntity(
+                        unlocked = color == ColorEnum.YELLOW && worker == WorkerEnum.PERSON,
+                        totalCollected = 0,
+                        quantity = 0,
+                        color = color,
+                        section = 2,
+                        workerEnum = worker,
+                        parentId = colorId.toInt()
+                    )
+                )
+                UpgradeEnum.values().filter { it.workerEnum == worker }.forEach { upgrade ->
+                    insertCollectable(
+                        UpgradeEntity(
+                            unlocked = color == ColorEnum.YELLOW && worker == WorkerEnum.PERSON && upgrade == UpgradeEnum.HAMMER,
+                            totalCollected = 0,
+                            quantity = 0,
+                            color = color,
+                            section = 3,
+                            workerEnum = worker,
+                            upgradeEnum = upgrade,
+                            parentId = workerEnumId.toInt()
+                        )
+                    )
+                }
+            }
+        }
+    }
 
 }

@@ -9,7 +9,7 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import ch.tenants.inkpalette.R
 import ch.tenants.inkpalette.model.Action
-import ch.tenants.inkpalette.model.Collectable
+import ch.tenants.inkpalette.model.collectable.Collectable
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.progressindicator.LinearProgressIndicator
 

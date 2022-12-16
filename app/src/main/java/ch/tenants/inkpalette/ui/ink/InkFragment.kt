@@ -9,9 +9,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import ch.tenants.inkpalette.data.*
+import ch.tenants.inkpalette.data.AppDatabase
+import ch.tenants.inkpalette.data.CollectableRepository
 import ch.tenants.inkpalette.databinding.FragmentInkBinding
-import ch.tenants.inkpalette.model.*
+import ch.tenants.inkpalette.model.Action
+import ch.tenants.inkpalette.model.collectable.Collectable
 import ch.tenants.inkpalette.ui.dialogs.BuyOrUpgradeDialog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -57,15 +59,6 @@ class InkFragment : Fragment() {
             adapter.collectables = it
         }
 
-
-        lifecycleScope.launch(Dispatchers.IO) {
-
-            if (startup) {
-                collectableRepository!!.deleteAll()
-                initGame()
-                startup = false
-            }
-        }
         return root
     }
 
@@ -78,47 +71,6 @@ class InkFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    private fun initGame() {
-        AppDatabase.getDatabase(requireContext().applicationContext).clearAllTables()
-        ColorEnum.values().forEach { color ->
-            val colorId = collectableRepository?.insertCollectable(
-                CollectableEntity(
-                    unlocked = color == ColorEnum.YELLOW,
-                    totalCollected = 0,
-                    quantity = 0,
-                    color = color, section = 1
-                )
-            )
-            WorkerEnum.values().forEach { worker ->
-                val workerEnumId = collectableRepository?.insertCollectable(
-                    WorkerEntity(
-                        unlocked = color == ColorEnum.YELLOW && worker == WorkerEnum.PERSON,
-                        totalCollected = 0,
-                        quantity = 0,
-                        color = color,
-                        section = 2,
-                        workerEnum = worker,
-                        parentId = colorId?.toInt()!!
-                    )
-                )
-                UpgradeEnum.values().filter { it.workerEnum == worker }.forEach { upgrade ->
-                    collectableRepository?.insertCollectable(
-                        UpgradeEntity(
-                            unlocked = color == ColorEnum.YELLOW && worker == WorkerEnum.PERSON && upgrade == UpgradeEnum.HAMMER,
-                            totalCollected = 0,
-                            quantity = 0,
-                            color = color,
-                            section = 3,
-                            workerEnum = worker,
-                            upgradeEnum = upgrade,
-                            parentId = workerEnumId?.toInt()!!
-                        )
-                    )
-                }
-            }
-        }
     }
 
     fun showBuyOrUpgradeDialog(collectable: Collectable, action: Action) {

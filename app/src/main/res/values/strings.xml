@@ -8,7 +8,6 @@
     <string name="string_null">Empty_String</string>
     <string name="integer_null">Empty_Integer</string>
     <string name="locked">Locked</string>
-    <string name="start_dialog">Start Dialog</string>
     <string name="cancel">Cancel</string>
     <string name="buy_ink">Buy with Ink</string>
     <string name="buy_coins">Buy with Coins</string>
@@ -23,4 +22,24 @@
     <string name="not_yet_implemented">Not Yet Implemented</string>
     <string name="not_yet_implemented_message">This Mini Game has not yet been implemented. Wait for Future Releases!</string>
     <string name="ink">Ink</string>
+    <string name="stats_button">Buttons clicked</string>
+    <string name="stats_button_collect">Button collect clicked</string>
+    <string name="stats_button_upgrade">Button upgrade clicked</string>
+    <string name="stats_button_confirm">Button confirm clicked</string>
+    <string name="stats_button_cancel">Button cancel clicked</string>
+    <string name="stats_button_convert">Button convert clicked</string>
+    <string name="stats_buy_with_ink">Bought with Ink</string>
+    <string name="stats_buy_with_coins">Bought with coins</string>
+    <string name="stats_clicked">Statistic touched</string>
+    <string name="reset_options">Reset Options</string>
+    <string name="reset_game">Reset the whole app</string>
+    <string name="reset_collectables">Reset the collectables</string>
+    <string name="reset_statistics">Reset all the statistics</string>
+    <string name="see_webpages">See our Webpages</string>
+    <string name="do_not_touch">Don\'t touch</string>
+    <string name="do_not_touch_summary">You should not touch this</string>
+    <string name="stats_touch_clicked">You touched the forbidden statistic</string>
+    <string name="settings_clicked">Settings touched</string>
+    <string name="settings_touch_clicked">You touched the forbidden Setting</string>
+    <string name="open_options">You are entering the Danger Zone</string>
 </resources>

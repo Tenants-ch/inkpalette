@@ -1,4 +1,4 @@
-package ch.tenants.inkpalette.model
+package ch.tenants.inkpalette.model.collectable
 
 import CostModel
 import RealCost
@@ -6,11 +6,12 @@ import UpgradeCost
 import UpgradeCostModel
 import WorkerCost
 import WorkerCostModel
-import android.util.Log
 import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import ch.tenants.inkpalette.R
-import ch.tenants.inkpalette.data.CollectableEntity
+import ch.tenants.inkpalette.data.entities.CollectableEntity
+import ch.tenants.inkpalette.model.Action
+import ch.tenants.inkpalette.model.enums.ColorEnum
 
 open class Collectable(
     val id: Int,
@@ -29,7 +30,7 @@ open class Collectable(
     var notCollectedCount: Int = 0,
     var upgrades: List<Collectable> = emptyList()
 ) {
-    open fun navigate(navController: NavController){
+    open fun navigate(navController: NavController) {
         val bundle = bundleOf(
             "section" to section + 1,
             "color" to color.ordinal
@@ -108,11 +109,11 @@ open class Collectable(
     }
 
     fun getCountDisplay(): String {
-        return "$quantity  / $storage UPGRADES ${upgrades.size}"
+        return "$quantity/$storage"
     }
 
     fun getNotCollectCountDisplay(): String {
-        return "$notCollectedCount / $intermediateStorage"
+        return "$notCollectedCount/$intermediateStorage"
     }
 
     private fun calculateNewState() {
@@ -125,7 +126,6 @@ open class Collectable(
     }
 
     fun collect() {
-        Log.i("Collectable", "Collect ${quantity}")
         quantity += notCollectedCount
         if (quantity > storage) {
             quantity = storage
@@ -157,7 +157,6 @@ open class Collectable(
     }
 
     open fun asDatabaseModel(): CollectableEntity {
-        //Log.i("Collectable", "so Saaaad ${quantity}")
         return CollectableEntity(
             uid = id,
             quantity = quantity,

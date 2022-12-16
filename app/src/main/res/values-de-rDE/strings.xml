@@ -3,6 +3,32 @@
     <string name="app_name">Ink Palette</string>
     <string name="action_settings">Einstellungen</string>
     <string name="title_stats">Statistik</string>
-
     <string name="spend_quantity_icon">Bezahle %1$d @</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="buy_ink">Mit Farbe kaufen</string>
+    <string name="buy_coins">Mit Münzen kaufen</string>
+    <string name="upgrade">Aufwerten</string>
+    <string name="ink">Farbe</string>
+    <string name="not_yet_implemented_message">Das kleine Spiel ist leider noch nicht implementiert worden. Das wird in zukünftigen Ausgaben kommen.</string>
+    <string name="not_yet_implemented">Noch nicht Implementiert</string>
+    <string name="section">Sektion</string>
+    <string name="unlock_ink">Mit Farbe freischalten</string>
+    <string name="upgrade_ink">Mit Farbe aufwerten</string>
+    <string name="convert_ink">Mit Farbe konvertieren</string>
+    <string name="convert">Konvertieren</string>
+    <string name="unlock">Freischalten</string>
+    <string name="locked">Gesperrt</string>
+    <string name="integer_null">Leere_Nummer</string>
+    <string name="string_null">Leerer_Zeichenkette</string>
+    <string name="title_settings">Einstellungen</string>
+    <string name="title_game">Farbe</string>
+    <string name="title_grid">Raster</string>
+    <string name="stats_button">Knöpfe aktiviert</string>
+    <string name="stats_button_collect">Knopf einsammeln aktiviert</string>
+    <string name="stats_button_upgrade">Knopf aufwerten aktiviert</string>
+    <string name="stats_button_confirm">Knopf akzeptieren aktiviert</string>
+    <string name="stats_button_cancel">Knopf abbrechen aktiviert</string>
+    <string name="stats_button_convert">Knopf konvertieren aktiviert</string>
+    <string name="stats_buy_with_ink">Gekauft mit Farbe</string>
+    <string name="stats_buy_with_coins">Gekauft mit M0nzen</string>
 </resources>

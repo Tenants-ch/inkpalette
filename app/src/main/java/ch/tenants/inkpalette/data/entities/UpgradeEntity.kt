@@ -1,11 +1,11 @@
-package ch.tenants.inkpalette.data
+package ch.tenants.inkpalette.data.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
-import ch.tenants.inkpalette.model.ColorEnum
-import ch.tenants.inkpalette.model.UpgradeCollectable
-import ch.tenants.inkpalette.model.UpgradeEnum
-import ch.tenants.inkpalette.model.WorkerEnum
+import ch.tenants.inkpalette.model.enums.ColorEnum
+import ch.tenants.inkpalette.model.collectable.UpgradeCollectable
+import ch.tenants.inkpalette.model.enums.UpgradeEnum
+import ch.tenants.inkpalette.model.enums.WorkerEnum
 
 @Entity(tableName = "upgrade")
 class UpgradeEntity(

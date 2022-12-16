@@ -1,10 +1,10 @@
-package ch.tenants.inkpalette.data
+package ch.tenants.inkpalette.data.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
-import ch.tenants.inkpalette.model.ColorEnum
-import ch.tenants.inkpalette.model.WorkerCollectable
-import ch.tenants.inkpalette.model.WorkerEnum
+import ch.tenants.inkpalette.model.enums.ColorEnum
+import ch.tenants.inkpalette.model.collectable.WorkerCollectable
+import ch.tenants.inkpalette.model.enums.WorkerEnum
 
 @Entity(tableName = "worker")
 open class WorkerEntity(

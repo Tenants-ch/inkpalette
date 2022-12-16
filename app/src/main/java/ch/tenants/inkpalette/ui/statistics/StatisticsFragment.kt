@@ -5,11 +5,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import ch.tenants.inkpalette.data.AppDatabase
+import ch.tenants.inkpalette.data.StatisticRepository
 import ch.tenants.inkpalette.databinding.FragmentStatisticsBinding
+import ch.tenants.inkpalette.model.Statistic
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class StatisticsFragment : Fragment() {
 
     private var _binding: FragmentStatisticsBinding? = null
+    private var statisticRepository: StatisticRepository? = null
+    private var data: List<Statistic>? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -21,21 +29,18 @@ class StatisticsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        val data = mutableListOf(
-            Statistic(name = "Collected Diamonds", value = 1),
-            Statistic(name = "Collected Coins", value = 2),
-            Statistic(name = "Collected Colors", value = 3),
-            Statistic(name = "Hours Played", value = 4),
-            Statistic(name = "Collected by Hand", value = 5),
-            Statistic(name = "Upgraded Items", value = 6)
-        )
+        statisticRepository =
+            StatisticRepository(AppDatabase.getDatabase(requireContext().applicationContext))
 
-        val adapter = StatisticsAdapter(data, this.requireContext())
 
         _binding = FragmentStatisticsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-
+        val context = this.requireContext()
+        lifecycleScope.launch(Dispatchers.IO) {
+            data = statisticRepository!!.getAll()
+        }
+        val adapter = data?.let { StatisticsAdapter(it, context) }
         binding.statsList.adapter = adapter
         return root
     }

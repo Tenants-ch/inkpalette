@@ -1,15 +1,7 @@
 import ch.tenants.inkpalette.model.CollectableType
-import ch.tenants.inkpalette.model.ColorEnum
-import ch.tenants.inkpalette.model.UpgradeEnum
-import ch.tenants.inkpalette.model.WorkerEnum
-
-data class Cost(
-    val quantity: Int,
-    val costType: CollectableType,
-    val colorEnum: ColorEnum? = null,
-    var workerEnum: WorkerEnum? = null,
-    var upgradeEnum: UpgradeEnum? = null
-)
+import ch.tenants.inkpalette.model.enums.ColorEnum
+import ch.tenants.inkpalette.model.enums.UpgradeEnum
+import ch.tenants.inkpalette.model.enums.WorkerEnum
 
 open class CostModel(var quantity: Int, val colorEnum: ColorEnum? = null)
 

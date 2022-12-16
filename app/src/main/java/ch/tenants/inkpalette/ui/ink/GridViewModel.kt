@@ -6,9 +6,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import ch.tenants.inkpalette.data.AppDatabase
 import ch.tenants.inkpalette.data.CollectableRepository
-import ch.tenants.inkpalette.model.Collectable
-import ch.tenants.inkpalette.model.ColorEnum
-import ch.tenants.inkpalette.model.WorkerEnum
+import ch.tenants.inkpalette.model.collectable.Collectable
+import ch.tenants.inkpalette.model.enums.ColorEnum
+import ch.tenants.inkpalette.model.enums.WorkerEnum
 import kotlinx.coroutines.launch
 
 

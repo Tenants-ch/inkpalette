@@ -13,7 +13,7 @@ import ch.tenants.inkpalette.data.AppDatabase
 import ch.tenants.inkpalette.data.CollectableRepository
 import ch.tenants.inkpalette.databinding.FragmentInkBinding
 import ch.tenants.inkpalette.model.Action
-import ch.tenants.inkpalette.model.Collectable
+import ch.tenants.inkpalette.model.collectable.Collectable
 import ch.tenants.inkpalette.ui.dialogs.BuyOrUpgradeDialog
 import ch.tenants.inkpalette.ui.ink.GridRecyclerViewAdapter
 import ch.tenants.inkpalette.ui.ink.GridViewModel

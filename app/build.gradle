@@ -6,15 +6,15 @@ plugins {
 
 android {
     namespace 'ch.tenants.inkpalette'
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
         applicationId "ch.tenants.inkpalette"
         minSdk 21
-        targetSdk 32
+        targetSdk 33
         versionCode 1
         versionName "1.0"
-
+        resConfigs("en", "de", "gsw")
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -52,6 +52,7 @@ dependencies {
     implementation("androidx.work:work-runtime-ktx:2.7.1")
     implementation "androidx.room:room-runtime:2.4.3"
     implementation "androidx.room:room-ktx:2.4.3"
+    implementation 'androidx.preference:preference:1.2.0'
     annotationProcessor "androidx.room:room-compiler:2.4.3"
     kapt "androidx.room:room-compiler:2.4.3"
     testImplementation 'junit:junit:4.13.2'

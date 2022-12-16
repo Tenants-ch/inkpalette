@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    android:label="@string/title_grid"
-    app:startDestination="@+id/navigation_settings">
+    android:label="@string/title_game"
+    app:startDestination="@+id/navigation_ink">
 
     <fragment
         android:id="@+id/navigation_grid"
@@ -19,10 +19,15 @@
         tools:layout="@layout/fragment_statistics" />
 
     <fragment
-        android:id="@+id/navigation_settings"
+        android:id="@+id/navigation_ink"
         android:name="ch.tenants.inkpalette.ui.ink.InkFragment"
         android:label="@string/ink"
         tools:layout="@layout/fragment_ink" />
+
+    <fragment
+        android:id="@+id/settings"
+        android:name="ch.tenants.inkpalette.ui.settings.SettingsFragment"
+        android:label="@string/title_settings" />
 
     <fragment
         android:id="@+id/navigation_section"

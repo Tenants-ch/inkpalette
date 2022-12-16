@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <SwitchPreferenceCompat
+        app:key="notifications"
+        app:title="Enable message notifications" />
+
+    <Preference
+        app:key="feedback"
+        app:summary="Report technical issues or suggest new features"
+        app:title="Send feedback" />
+
+    <EditTextPreference
+        app:key="counting"
+        app:title="Counting preference" />
+
+    <Preference
+        app:key="touch"
+        app:summary="@string/do_not_touch_summary"
+        app:title="@string/do_not_touch" />
+
+    <Preference
+        app:key="webpage"
+        app:title="@string/see_webpages">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:data="https://www.tenants.ch" />
+    </Preference>
+
+    <PreferenceCategory
+        app:key="reset_options"
+        app:initialExpandedChildrenCount="0"
+        app:title="@string/reset_options"
+        app:summary="@string/open_options"
+        >
+        <Preference
+            app:key="reset_game"
+            app:title="@string/reset_game">
+        </Preference>
+
+        <Preference
+            app:key="reset_collectables"
+            app:title="@string/reset_collectables">
+        </Preference>
+
+        <Preference
+            app:key="reset_statistics"
+            app:title="@string/reset_statistics">
+        </Preference>
+
+    </PreferenceCategory>
+</PreferenceScreen>

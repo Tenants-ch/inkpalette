@@ -12,7 +12,7 @@ import androidx.core.graphics.BlendModeCompat
 import androidx.fragment.app.DialogFragment
 import ch.tenants.inkpalette.R
 import ch.tenants.inkpalette.model.Action
-import ch.tenants.inkpalette.model.Collectable
+import ch.tenants.inkpalette.model.collectable.Collectable
 
 
 class BuyOrUpgradeDialog(val collectable: Collectable, val action: Action) : DialogFragment() {

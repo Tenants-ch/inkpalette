@@ -1,12 +1,10 @@
-package ch.tenants.inkpalette.data
+package ch.tenants.inkpalette.data.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import ch.tenants.inkpalette.model.Collectable
-import ch.tenants.inkpalette.model.ColorEnum
-import ch.tenants.inkpalette.model.UpgradeEnum
-import ch.tenants.inkpalette.model.WorkerEnum
+import ch.tenants.inkpalette.model.collectable.Collectable
+import ch.tenants.inkpalette.model.enums.ColorEnum
 
 @Entity(tableName = "collectable")
 open class CollectableEntity(

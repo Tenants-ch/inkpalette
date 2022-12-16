@@ -4,8 +4,8 @@ import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.CreationExtras
-import ch.tenants.inkpalette.model.ColorEnum
-import ch.tenants.inkpalette.model.WorkerEnum
+import ch.tenants.inkpalette.model.enums.ColorEnum
+import ch.tenants.inkpalette.model.enums.WorkerEnum
 
 
 class GridViewModelFactory(

@@ -1,14 +1,17 @@
 package ch.tenants.inkpalette.ui.statistics
 
 import android.content.Context
+import android.provider.Settings.Global.getString
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import androidx.core.view.isVisible
 import ch.tenants.inkpalette.databinding.StatisticCellBinding
+import ch.tenants.inkpalette.model.Statistic
 
 class StatisticsAdapter(
-    private var statistics: MutableList<Statistic>,
+    private var statistics: List<Statistic>,
     val context: Context
 ) : BaseAdapter() {
     private var layoutInflater: LayoutInflater = LayoutInflater.from(context)
@@ -44,8 +47,9 @@ class StatisticsAdapter(
             _binding = bindings[view]
         }
         val statistic = getItem(index) //get the data for this index
-        binding.name.text = statistic.name
-        binding.value.text = statistic.value.toString()
+        binding.name.text = view.context.getString(statistic.statisticEnum.stringResourceId)
+        binding.value.text = statistic.quantity.toString()
+        view.isVisible = statistic.getVisibility()
         return view
     }
 }

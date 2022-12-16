@@ -16,7 +16,7 @@ import ch.tenants.inkpalette.data.AppDatabase
 import ch.tenants.inkpalette.data.CollectableRepository
 import ch.tenants.inkpalette.databinding.ActivityMainBinding
 import ch.tenants.inkpalette.model.Action
-import ch.tenants.inkpalette.model.Collectable
+import ch.tenants.inkpalette.model.collectable.Collectable
 import ch.tenants.inkpalette.ui.dialogs.BuyOrUpgradeDialog
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.Dispatchers
@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity(), BuyOrUpgradeDialog.BuyDialogListener {
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_settings, R.id.navigation_statistics, R.id.navigation_grid
+                R.id.navigation_ink, R.id.navigation_statistics, R.id.navigation_grid
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -65,7 +65,10 @@ class MainActivity : AppCompatActivity(), BuyOrUpgradeDialog.BuyDialogListener {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
-            R.id.action_settings -> true
+            R.id.open_settings_fragment ->{
+                val navController = findNavController(R.id.nav_host_fragment_activity_main)
+                navController.navigate(R.id.settings)
+                true}
             else -> super.onOptionsItemSelected(item)
         }
     }

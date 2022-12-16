@@ -1,4 +1,4 @@
-package ch.tenants.inkpalette.model
+package ch.tenants.inkpalette.model.enums
 
 import CostModel
 import android.graphics.Color

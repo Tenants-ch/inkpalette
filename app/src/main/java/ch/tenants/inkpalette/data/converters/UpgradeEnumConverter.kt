@@ -1,8 +1,8 @@
-package ch.tenants.inkpalette.data
+package ch.tenants.inkpalette.data.converters
 
 import androidx.room.ProvidedTypeConverter
 import androidx.room.TypeConverter
-import ch.tenants.inkpalette.model.UpgradeEnum
+import ch.tenants.inkpalette.model.enums.UpgradeEnum
 
 @ProvidedTypeConverter
 class UpgradeEnumConverter {

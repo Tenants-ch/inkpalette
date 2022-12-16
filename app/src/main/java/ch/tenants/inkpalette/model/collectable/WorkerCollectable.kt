@@ -1,17 +1,19 @@
-package ch.tenants.inkpalette.model
+package ch.tenants.inkpalette.model.collectable
 
 import CostModel
-import android.util.Log
+import androidx.core.os.bundleOf
 import androidx.navigation.NavController
-import ch.tenants.inkpalette.data.UpgradeEntity
+import ch.tenants.inkpalette.R
+import ch.tenants.inkpalette.data.entities.WorkerEntity
+import ch.tenants.inkpalette.model.enums.ColorEnum
+import ch.tenants.inkpalette.model.enums.WorkerEnum
 
-class UpgradeCollectable(
+open class WorkerCollectable(
     id: Int,
     unlocked: Boolean,
     color: ColorEnum,
-    workerEnum: WorkerEnum,
-    val upgradeEnum: UpgradeEnum,
-    parentId: Int,
+    val workerEnum: WorkerEnum,
+    val parentId: Int,
     quantity: Int = 0,
     totalCollected: Int = 0,
     section: Int = 1,
@@ -24,12 +26,10 @@ class UpgradeCollectable(
     ticks: Int = 0,
     notCollectedCount: Int = 0,
     upgrades: List<Collectable> = emptyList()
-) : WorkerCollectable(
+) : Collectable(
     id,
     unlocked,
     color,
-    workerEnum,
-    parentId,
     quantity,
     totalCollected,
     section,
@@ -43,30 +43,34 @@ class UpgradeCollectable(
     notCollectedCount,
     upgrades
 ) {
-    override fun navigate(navController: NavController) {
-        Log.i("UpgradeCollectable", "bundle NOOOO")
-        navController.navigate(upgradeEnum.navigation)
-    }
-
     override fun getBuyCost(): CostModel {
-        return upgradeEnum.buyCost!!
+        return workerEnum.buyCost!!
     }
 
     override fun getUpgradeCost(): CostModel {
-        return upgradeEnum.upgradeCost
+        return workerEnum.upgradeCost
     }
 
     override fun getIconId(): Int {
-        return upgradeEnum.iconResourceId
+        return workerEnum.iconResourceId
     }
 
     override fun getOrder(): Int {
-        return upgradeEnum.order
+        return workerEnum.order
     }
 
-    override fun asDatabaseModel(): UpgradeEntity {
-        //Log.i("UpgradeCollectable", "so Saaaad ${quantity}")
-        return UpgradeEntity(
+    override fun navigate(navController: NavController) {
+        val bundle = bundleOf(
+            "section" to section + 1,
+            "color" to color.ordinal,
+            "worker" to workerEnum.ordinal
+        )
+        navController.navigate(R.id.navigation_section, bundle)
+    }
+
+    override fun asDatabaseModel(): WorkerEntity {
+        //Log.i("WorkerCollectable", "so Saaaad ${quantity}")
+        return WorkerEntity(
             uid = id,
             quantity = quantity,
             totalCollected = totalCollected,
@@ -82,8 +86,7 @@ class UpgradeCollectable(
             ticks = ticks,
             notCollectedCount = notCollectedCount,
             parentId = parentId,
-            workerEnum = workerEnum,
-            upgradeEnum = upgradeEnum
+            workerEnum = workerEnum
         )
     }
 }

@@ -13,9 +13,9 @@ import ch.tenants.inkpalette.data.AppDatabase
 import ch.tenants.inkpalette.data.CollectableRepository
 import ch.tenants.inkpalette.databinding.FragmentInkBinding
 import ch.tenants.inkpalette.model.Action
-import ch.tenants.inkpalette.model.Collectable
-import ch.tenants.inkpalette.model.ColorEnum
-import ch.tenants.inkpalette.model.WorkerEnum
+import ch.tenants.inkpalette.model.collectable.Collectable
+import ch.tenants.inkpalette.model.enums.ColorEnum
+import ch.tenants.inkpalette.model.enums.WorkerEnum
 import ch.tenants.inkpalette.ui.dialogs.BuyOrUpgradeDialog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

@@ -3,11 +3,18 @@ package ch.tenants.inkpalette.data
 import RealCost
 import UpgradeCost
 import WorkerCost
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import androidx.room.Transaction
-import ch.tenants.inkpalette.model.*
+import ch.tenants.inkpalette.data.entities.UpgradeEntity
+import ch.tenants.inkpalette.data.entities.WorkerEntity
+import ch.tenants.inkpalette.data.entities.asDomainModel
+import ch.tenants.inkpalette.model.Action
+import ch.tenants.inkpalette.model.collectable.Collectable
+import ch.tenants.inkpalette.model.collectable.UpgradeCollectable
+import ch.tenants.inkpalette.model.collectable.WorkerCollectable
+import ch.tenants.inkpalette.model.enums.ColorEnum
+import ch.tenants.inkpalette.model.enums.WorkerEnum
 
 class CollectableRepository(private val database: AppDatabase) {
 
@@ -18,9 +25,9 @@ class CollectableRepository(private val database: AppDatabase) {
             }
         }
 
-    private fun mapColorWithWorker(colorWithWorker: ColorWithWorker): Collectable {
-        val col = colorWithWorker.collectableEntity.asDomainModel()
-        col.upgrades = colorWithWorker.upgrades.asDomainModel()
+    private fun mapColorWithWorker(colorWithWorkers: ColorWithWorkers): Collectable {
+        val col = colorWithWorkers.collectableEntity.asDomainModel()
+        col.upgrades = colorWithWorkers.upgrades.asDomainModel()
         return col
     }
 
@@ -38,23 +45,12 @@ class CollectableRepository(private val database: AppDatabase) {
     }
 
     fun updateCollectable(collectable: Collectable) {
-        val ip = collectable.asDatabaseModel()
-        Log.i("CollectableRepository", "collectable ${ip}")
-        when (ip) {
+        when (val ip = collectable.asDatabaseModel()) {
             is UpgradeEntity -> database.collectableDao.updateCollectable(ip)
             is WorkerEntity -> database.collectableDao.updateCollectable(ip)
             else -> database.collectableDao.updateCollectable(ip)
         }
     }
-
-    fun insertCollectable(collectableEntity: CollectableEntity): Long =
-        database.collectableDao.insertCollectable(collectableEntity)
-
-    fun insertCollectable(workerEntity: WorkerEntity): Long =
-        database.collectableDao.insertCollectable(workerEntity)
-
-    fun insertCollectable(upgradeEntity: UpgradeEntity): Long =
-        database.collectableDao.insertCollectable(upgradeEntity)
 
     fun getCollectablesByValues(
         section: Int,
@@ -167,10 +163,7 @@ class CollectableRepository(private val database: AppDatabase) {
             it.asDomainModel()
         }
 
-    fun deleteAll() {
-        database.collectableDao.getAllCollectables().forEach {
-            database.collectableDao.delete(it)
-        }
-    }
+    fun initCollectables() = database.collectableDao.initCollectables()
+
 
 }
