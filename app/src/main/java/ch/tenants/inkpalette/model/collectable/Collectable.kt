@@ -44,25 +44,25 @@ open class Collectable(
     }
 
     fun getProgress(): Int {
-        if (ticks > 0) {
-            var diff: Double = ((neededTicksToCollect.toDouble()) / ticks.toDouble())
-            var progress = 100 / diff
-            return progress.toInt()
+        return if (ticks > 0) {
+            val diff: Double = ((neededTicksToCollect.toDouble()) / ticks.toDouble())
+            val progress = 100 / diff
+            progress.toInt()
         } else {
-            return 0
+            0
         }
     }
 
     fun giveCostForAction(action: Action): RealCost {
-        when (action) {
+        return when (action) {
             Action.UNLOCK -> {
-                return generateCostObject(getBuyCost())
+                generateCostObject(getBuyCost())
             }
             Action.UPGRADE -> {
-                return generateCostObject(getUpgradeCost())
+                generateCostObject(getUpgradeCost())
             }
             else -> {
-                return generateCostObject(
+                generateCostObject(
                     CostModel(
                         0
                     )
@@ -82,7 +82,7 @@ open class Collectable(
     }
 
 
-    fun generateCostObject(costModel: CostModel): RealCost {
+    private fun generateCostObject(costModel: CostModel): RealCost {
         when (costModel) {
             is UpgradeCostModel -> {
                 return UpgradeCost(

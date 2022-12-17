@@ -108,11 +108,11 @@ class CollectableRepository(private val database: AppDatabase) {
         }
     }
 
-    fun hasQuantityToPerformAction(collectable: Collectable, action: Action): Boolean {
+    private fun hasQuantityToPerformAction(collectable: Collectable, action: Action): Boolean {
         return hasEnoughQuantity(collectable.giveCostForAction(action))
     }
 
-    fun hasEnoughQuantity(cost: RealCost): Boolean {
+    private fun hasEnoughQuantity(cost: RealCost): Boolean {
         return when (cost) {
             is UpgradeCost -> {
                 database.collectableDao.hasEnoughUpgradeQuantity(
@@ -148,7 +148,7 @@ class CollectableRepository(private val database: AppDatabase) {
         database.collectableDao.getAllUnlockedUpgrades().asDomainModel()
 
 
-    fun getCollectableByAllValues(
+    private fun getCollectableByAllValues(
         section: Int,
         color: ColorEnum,
         workerEnum: WorkerEnum

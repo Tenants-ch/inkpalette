@@ -40,6 +40,9 @@ class SettingsFragment : PreferenceFragmentCompat() {
             true
         }
 
+    }
+
+    private fun configureResetOptions() {
         val resetGame: Preference? = findPreference("reset_game")
         resetGame?.setOnPreferenceClickListener {
             resetGame()
@@ -57,21 +60,9 @@ class SettingsFragment : PreferenceFragmentCompat() {
             resetStatistics()
             true
         }
-
-        val countingPreference: Preference? = findPreference("counting")
-
-        countingPreference?.summaryProvider =
-            Preference.SummaryProvider<EditTextPreference> { preference ->
-                val text = preference.text
-                if (TextUtils.isEmpty(text)) {
-                    "Not set"
-                } else {
-                    "Length of saved value: " + (text?.length ?: 0)
-                }
-            }
     }
 
-    fun updateStatistic(stats: List<StatisticEnum>) {
+    private fun updateStatistic(stats: List<StatisticEnum>) {
         lifecycleScope.launch(Dispatchers.IO) {
             statisticRepository?.addStats(stats)
         }
@@ -86,13 +77,13 @@ class SettingsFragment : PreferenceFragmentCompat() {
     }
 
 
-    fun resetCollectables() {
+    private fun resetCollectables() {
         lifecycleScope.launch(Dispatchers.IO) {
             collectableRepository?.initCollectables()
         }
     }
 
-    fun resetStatistics() {
+    private fun resetStatistics() {
         lifecycleScope.launch(Dispatchers.IO) {
             statisticRepository?.initStatistics()
         }

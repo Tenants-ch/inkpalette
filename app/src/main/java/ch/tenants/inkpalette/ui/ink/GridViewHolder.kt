@@ -113,7 +113,7 @@ class GridViewHolder(
     }
 
 
-    fun setButtonColors(collectable: Collectable) {
+    private fun setButtonColors(collectable: Collectable) {
 
 
         val states = arrayOf(

@@ -1,7 +1,6 @@
 package ch.tenants.inkpalette.model.collectable
 
 import CostModel
-import android.util.Log
 import androidx.navigation.NavController
 import ch.tenants.inkpalette.data.entities.UpgradeEntity
 import ch.tenants.inkpalette.model.enums.ColorEnum

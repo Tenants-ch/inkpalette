@@ -39,9 +39,7 @@ open class WorkerEntity(
     neededTicksToCollect = neededTicksToCollect,
     ticks = ticks,
     notCollectedCount = notCollectedCount,
-) {
-
-}
+)
 
 fun WorkerEntity.asDomainModel(): WorkerCollectable {
     return WorkerCollectable(

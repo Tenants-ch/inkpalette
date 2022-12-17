@@ -85,7 +85,7 @@ class SectionFragment : Fragment() {
         _binding = null
     }
 
-    fun showBuyOrUpgradeDialog(collectable: Collectable, action: Action) {
+    private fun showBuyOrUpgradeDialog(collectable: Collectable, action: Action) {
         // Create an instance of the dialog fragment and show it
         val dialog = BuyOrUpgradeDialog(collectable, action)
         activity?.let { dialog.show(it.supportFragmentManager, "NoticeDialogFragment") }

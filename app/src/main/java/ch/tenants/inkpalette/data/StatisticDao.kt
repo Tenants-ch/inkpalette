@@ -1,5 +1,6 @@
 package ch.tenants.inkpalette.data
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import ch.tenants.inkpalette.data.entities.StatisticEntity
 import ch.tenants.inkpalette.model.enums.StatisticEnum
@@ -8,7 +9,10 @@ import ch.tenants.inkpalette.model.enums.StatisticEnum
 interface StatisticDao {
 
     @Query("SELECT * FROM statistic")
-    fun getAll(): List<StatisticEntity>
+    fun getAllSynced(): List<StatisticEntity>
+
+    @Query("SELECT * FROM statistic")
+    fun getAll(): LiveData<List<StatisticEntity>>
 
     @Query("SELECT * FROM statistic WHERE statisticEnum LIKE :statisticEnum")
     fun getByEnum(statisticEnum: StatisticEnum): StatisticEntity

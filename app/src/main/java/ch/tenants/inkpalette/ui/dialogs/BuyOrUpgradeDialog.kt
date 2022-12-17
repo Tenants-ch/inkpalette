@@ -24,11 +24,11 @@ class BuyOrUpgradeDialog(val collectable: Collectable, val action: Action) : Dia
 
             builder.setTitle(action.title).setMessage(createMessageForAction(action))
                 .setIcon(action.icon)
-                .setPositiveButton(action.buttonText) { dialog, id ->
+                .setPositiveButton(action.buttonText) { _, _ ->
                     // Send the positive button event back to the host activity
                     listener.onDialogPositiveClick(this, collectable, action)
                 }
-                .setNegativeButton(R.string.cancel) { dialog, id ->
+                .setNegativeButton(R.string.cancel) { _, _ ->
                     // Send the negative button event back to the host activity
                     listener.onDialogNegativeClick(this)
                 }

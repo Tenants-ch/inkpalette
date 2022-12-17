@@ -35,7 +35,7 @@ class GridFragment : Fragment() {
             CollectableOldModel(name = "Collected Diamonds", icon = resources.getDrawable(R.drawable.ic_baseline_keyboard_double_arrow_up_24, null), color =  Color.GRAY,1, info = "Upgrade this will Double to production of your Blue color")
         )
 
-        val adapter = GridAdapter(data, this.requireContext());
+        val adapter = GridAdapter(data, this.requireContext())
 
         _binding = FragmentGridBinding.inflate(inflater, container, false)
         val root: View = binding.root

@@ -9,7 +9,7 @@ import ch.tenants.inkpalette.databinding.ButtonGroupBinding
 import com.google.android.material.snackbar.Snackbar
 
 class GridAdapter(
-    var collectableOldModels: MutableList<CollectableOldModel>,
+    private var collectableOldModels: MutableList<CollectableOldModel>,
     val context: Context
 ) : BaseAdapter() {
     var layoutInflater: LayoutInflater = LayoutInflater.from(context)
@@ -33,7 +33,7 @@ class GridAdapter(
         index: Int, oldView: View?,
         viewGroup: ViewGroup?
     ): View {
-        var view: View
+        val view: View
         if (oldView == null) { //check if we get a view to recycle
             _binding = ButtonGroupBinding.inflate(
                 layoutInflater,

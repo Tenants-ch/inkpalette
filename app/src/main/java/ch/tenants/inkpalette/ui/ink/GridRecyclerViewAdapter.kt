@@ -7,7 +7,7 @@ import ch.tenants.inkpalette.model.Action
 import ch.tenants.inkpalette.model.collectable.Collectable
 
 
-class GridRecyclerViewAdapter(val updateCollectable: (Collectable) -> Unit, val confirmAction: (Collectable, Action) -> Unit) :
+class GridRecyclerViewAdapter(private val updateCollectable: (Collectable) -> Unit, private val confirmAction: (Collectable, Action) -> Unit) :
     RecyclerView.Adapter<GridViewHolder>() {
 
     var collectables: List<Collectable> = emptyList()

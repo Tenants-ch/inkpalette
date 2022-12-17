@@ -1,53 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <SwitchPreferenceCompat
-        app:key="notifications"
-        app:title="Enable message notifications" />
-
-    <Preference
-        app:key="feedback"
-        app:summary="Report technical issues or suggest new features"
-        app:title="Send feedback" />
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <EditTextPreference
-        app:key="counting"
-        app:title="Counting preference" />
+        app:key="profile"
+        app:title="@string/profile_name" />
 
     <Preference
         app:key="touch"
         app:summary="@string/do_not_touch_summary"
         app:title="@string/do_not_touch" />
 
-    <Preference
-        app:key="webpage"
-        app:title="@string/see_webpages">
-        <intent
-            android:action="android.intent.action.VIEW"
-            android:data="https://www.tenants.ch" />
-    </Preference>
+    <PreferenceCategory android:title="@string/about">
+        <Preference
+            android:summary="@string/zicons"
+            app:key="devs"
+            app:title="@string/developer">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://www.zicons.ch" />
+        </Preference>
+
+        <Preference
+            app:key="feedback"
+            app:summary="@string/feedback_summary"
+            app:title="@string/feedback">
+            <intent
+                android:action="android.intent.action.SENDTO"
+                android:data="mailto:">
+                <extra
+                    android:name="android.intent.extra.EXTRA_EMAIL"
+                    android:value="@string/email_address" />
+                <extra
+                    android:name="android.intent.extra.SUBJECT"
+                    android:value="@string/email_subject" />
+                <extra
+                    android:name="android.intent.extra.TEXT"
+                    android:value="@string/email_subject" />
+            </intent>
+        </Preference>
+
+
+        <Preference
+            app:key="webpage"
+            app:title="@string/see_webpages">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://www.tenants.ch" />
+        </Preference>
+    </PreferenceCategory>
 
     <PreferenceCategory
-        app:key="reset_options"
         app:initialExpandedChildrenCount="0"
-        app:title="@string/reset_options"
+        app:key="reset_options"
         app:summary="@string/open_options"
-        >
+        app:title="@string/reset_options">
         <Preference
             app:key="reset_game"
-            app:title="@string/reset_game">
-        </Preference>
+            app:title="@string/reset_game" />
 
         <Preference
             app:key="reset_collectables"
-            app:title="@string/reset_collectables">
-        </Preference>
+            app:title="@string/reset_collectables" />
 
         <Preference
             app:key="reset_statistics"
-            app:title="@string/reset_statistics">
-        </Preference>
+            app:title="@string/reset_statistics" />
 
     </PreferenceCategory>
 </PreferenceScreen>

@@ -25,7 +25,6 @@ class InkFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
-    private var startup = true
     private var collectableRepository: CollectableRepository? = null
     private val viewModel: GridViewModel by lazy {
         val activity = requireNotNull(this.activity) {
@@ -73,7 +72,7 @@ class InkFragment : Fragment() {
         _binding = null
     }
 
-    fun showBuyOrUpgradeDialog(collectable: Collectable, action: Action) {
+    private fun showBuyOrUpgradeDialog(collectable: Collectable, action: Action) {
 
         lifecycleScope.launch(Dispatchers.IO) {
             val dialog = BuyOrUpgradeDialog(collectable, action)
