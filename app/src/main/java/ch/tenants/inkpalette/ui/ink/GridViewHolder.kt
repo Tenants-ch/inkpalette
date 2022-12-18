@@ -60,21 +60,7 @@ class GridViewHolder(
         level?.text =
             if (collectable.unlocked) collectable.level.toString() else ""
 
-        /*
-        upgradeButton?.setBackgroundDrawable(
-            ButtonBackgroundDrawable(
-                collectable.color.color,
-                Color.BLACK,
-                1,
-                1
-            )
-        )
-        infoButton?.setOnClickListener { view ->
-            collectable.attribute.info.let {
-                Snackbar.make(view, it, Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
-            }
-        }*/
+
         upgradeButton?.setOnClickListener {
             confirmAction(collectable, Action.UPGRADE)
         }
@@ -90,13 +76,13 @@ class GridViewHolder(
             collectable.collect()
             updateCollectable(collectable)
         }
-        progressIndicator?.progress = collectable.getProgress()
 
         nonCollectedCount?.isVisible = collectable.unlocked
-        if (!collectable.unlocked) {
-            progressIndicator?.hide()
-        } else {
+        if (collectable.unlocked) {
             progressIndicator?.show()
+            progressIndicator?.progress = collectable.getProgress()
+        } else {
+            progressIndicator?.hide()
         }
     }
 

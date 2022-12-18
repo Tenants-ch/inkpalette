@@ -1,9 +1,7 @@
 package ch.tenants.inkpalette.ui.settings
 
 import android.os.Bundle
-import android.text.TextUtils
 import androidx.lifecycle.lifecycleScope
-import androidx.preference.EditTextPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import ch.tenants.inkpalette.R
@@ -39,6 +37,8 @@ class SettingsFragment : PreferenceFragmentCompat() {
             )
             true
         }
+
+        configureResetOptions()
 
     }
 

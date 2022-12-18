@@ -36,7 +36,7 @@
                     android:value="@string/email_subject" />
                 <extra
                     android:name="android.intent.extra.TEXT"
-                    android:value="@string/email_subject" />
+                    android:value="@string/email_text" />
             </intent>
         </Preference>
 

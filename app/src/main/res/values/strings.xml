@@ -48,4 +48,7 @@
     <string name="profile_name">Profile Name</string>
     <string name="feedback_summary">Report technical issues or suggest new features</string>
     <string name="feedback">Send feedback</string>
+    <string name="email_address">feedback@tenants.ch</string>
+    <string name="email_subject">[EN] Ink Palette Feedback</string>
+    <string name="email_text">Here you can enter your Feedback or But report.</string>
 </resources>
