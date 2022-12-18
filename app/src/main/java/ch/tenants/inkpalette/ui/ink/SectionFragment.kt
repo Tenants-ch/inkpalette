@@ -11,10 +11,12 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ch.tenants.inkpalette.data.AppDatabase
 import ch.tenants.inkpalette.data.CollectableRepository
+import ch.tenants.inkpalette.data.StatisticRepository
 import ch.tenants.inkpalette.databinding.FragmentInkBinding
 import ch.tenants.inkpalette.model.Action
 import ch.tenants.inkpalette.model.collectable.Collectable
 import ch.tenants.inkpalette.model.enums.ColorEnum
+import ch.tenants.inkpalette.model.enums.StatisticEnum
 import ch.tenants.inkpalette.model.enums.WorkerEnum
 import ch.tenants.inkpalette.ui.dialogs.BuyOrUpgradeDialog
 import kotlinx.coroutines.Dispatchers
@@ -28,6 +30,7 @@ class SectionFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
     private var collectableRepository: CollectableRepository? = null
+    private var statisticRepository: StatisticRepository? = null
 
     private val viewModel: GridViewModel by lazy {
         val activity = requireNotNull(this.activity) {
@@ -57,6 +60,9 @@ class SectionFragment : Fragment() {
         collectableRepository =
             CollectableRepository(AppDatabase.getDatabase(requireContext().applicationContext))
 
+        statisticRepository =
+            StatisticRepository(AppDatabase.getDatabase(requireContext().applicationContext))
+
         val recyclerView: RecyclerView = binding.recyclerGrid
         adapter = GridRecyclerViewAdapter(::updateCollectable, ::showBuyOrUpgradeDialog)
         recyclerView.adapter = adapter
@@ -74,9 +80,15 @@ class SectionFragment : Fragment() {
     }
 
 
-    private fun updateCollectable(collectable: Collectable) {
+    private fun updateCollectable(collectable: Collectable, action: Action) {
         lifecycleScope.launch(Dispatchers.IO) {
             collectableRepository?.updateCollectable(collectable)
+            statisticRepository?.addStats(
+                listOf(
+                    StatisticEnum.BUTTONS,
+                    StatisticEnum.getEnumForAction(action)
+                )
+            )
         }
     }
 

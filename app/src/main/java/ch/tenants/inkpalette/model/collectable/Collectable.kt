@@ -153,6 +153,7 @@ open class Collectable(
             Action.CONVERT -> {
                 quantity -= ration
             }
+            else -> {}
         }
     }
 

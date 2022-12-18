@@ -17,7 +17,7 @@ import com.google.android.material.progressindicator.LinearProgressIndicator
 class GridViewHolder(
     inflater: LayoutInflater,
     parent: ViewGroup,
-    val updateCollectable: (Collectable) -> Unit,
+    val updateCollectable: (Collectable, Action) -> Unit,
     val confirmAction: (Collectable, Action) -> Unit
 ) :
     RecyclerView.ViewHolder(
@@ -74,7 +74,7 @@ class GridViewHolder(
         }
         collectButton?.setOnClickListener {
             collectable.collect()
-            updateCollectable(collectable)
+            updateCollectable(collectable, Action.COLLECT)
         }
 
         nonCollectedCount?.isVisible = collectable.unlocked

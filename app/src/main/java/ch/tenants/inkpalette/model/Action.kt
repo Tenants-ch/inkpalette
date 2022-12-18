@@ -15,5 +15,8 @@ enum class Action(val icon: Int, val title: Int, val buttonText: Int) {
     ),
     CONVERT(
         R.drawable.ic_baseline_autorenew_24, R.string.convert, R.string.convert_ink
+    ),
+    COLLECT(
+        R.drawable.ic_baseline_autorenew_24, R.string.convert, R.string.convert_ink
     )
 }

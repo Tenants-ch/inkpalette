@@ -85,11 +85,9 @@ class MainActivity : AppCompatActivity(), BuyOrUpgradeDialog.BuyDialogListener {
     override fun onDialogPositiveClick(
         dialog: DialogFragment, collectable: Collectable, action: Action
     ) {
-        val listEnum: MutableList<StatisticEnum> = mutableListOf(StatisticEnum.BUTTONS, StatisticEnum.BUTTON_CONFIRM, StatisticEnum.BUY_WITH_INK)
-
         lifecycleScope.launch(Dispatchers.IO) {
             collectableRepository?.performActionOnCollectable(collectable, action)
-            statisticRepository?.addStats(listOf(StatisticEnum.BUTTONS, StatisticEnum.BUTTON_CONFIRM, StatisticEnum.BUY_WITH_INK))
+            statisticRepository?.addStats(listOf(StatisticEnum.BUTTONS, StatisticEnum.BUTTON_CONFIRM, StatisticEnum.BUY_WITH_INK, StatisticEnum.getEnumForAction(action)))
         }
     }
 
