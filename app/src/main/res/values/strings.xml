@@ -44,11 +44,11 @@
     <string name="open_options">You are entering the Danger Zone</string>
     <string name="about">About the Game</string>
     <string name="developer">Developer</string>
-    <string name="zicons">Zicons</string>
+    <string name="zicons" translatable="false">Zicons</string>
     <string name="profile_name">Profile Name</string>
     <string name="feedback_summary">Report technical issues or suggest new features</string>
     <string name="feedback">Send feedback</string>
-    <string name="email_address">feedback@tenants.ch</string>
+    <string name="email_address" translatable="false">mailto:feedback@tenants.ch</string>
     <string name="email_subject">[EN] Ink Palette Feedback</string>
-    <string name="email_text">Here you can enter your Feedback or But report.</string>
+    <string name="email_text">Here you can enter your Feedback or Bug report.</string>
 </resources>

@@ -31,4 +31,23 @@
     <string name="stats_button_convert">Knopf konvertiere aktiviert</string>
     <string name="stats_buy_with_coins">Gkauft mit Münz</string>
     <string name="stats_buy_with_ink">Gkauft mit Farb</string>
+    <string name="email_text">Was sind dini Problem</string>
+    <string name="email_subject">[SWISS] Farb Palette Rückmeldig</string>
+    <string name="feedback">Gib en Rückmeldig</string>
+    <string name="feedback_summary">Seg mir was dich stört. man!</string>
+    <string name="profile_name">Profil Name</string>
+    <string name="developer">Entwickler</string>
+    <string name="about">Über s Spiel</string>
+    <string name="open_options">Pass uf, gfährlich</string>
+    <string name="settings_touch_clicked">Hesch wieder müsse alles alänge gell</string>
+    <string name="settings_clicked">Hesch di Istellige aglengt</string>
+    <string name="stats_touch_clicked">Du hesch sogar die verboteni Statistik aglengt</string>
+    <string name="do_not_touch_summary">Mich setsch aber nid alänge</string>
+    <string name="do_not_touch">Bitte läng mich nid ah</string>
+    <string name="see_webpages">Bsuech eusi Websiite</string>
+    <string name="reset_statistics">Setzt d Statistik zrug</string>
+    <string name="reset_collectables">Setzt s gsammlete zrug</string>
+    <string name="reset_game">Setzt s ganze Spiel zrug</string>
+    <string name="reset_options">Zrugsetztigsistellige</string>
+    <string name="stats_clicked">Statistik aglengt</string>
 </resources>

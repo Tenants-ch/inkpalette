@@ -14,9 +14,11 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import ch.tenants.inkpalette.data.AppDatabase
 import ch.tenants.inkpalette.data.CollectableRepository
+import ch.tenants.inkpalette.data.StatisticRepository
 import ch.tenants.inkpalette.databinding.ActivityMainBinding
 import ch.tenants.inkpalette.model.Action
 import ch.tenants.inkpalette.model.collectable.Collectable
+import ch.tenants.inkpalette.model.enums.StatisticEnum
 import ch.tenants.inkpalette.ui.dialogs.BuyOrUpgradeDialog
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.Dispatchers
@@ -27,11 +29,13 @@ class MainActivity : AppCompatActivity(), BuyOrUpgradeDialog.BuyDialogListener {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
     private var collectableRepository: CollectableRepository? = null
+    private var statisticRepository: StatisticRepository? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         collectableRepository = CollectableRepository(AppDatabase.getDatabase(applicationContext))
+        statisticRepository = StatisticRepository(AppDatabase.getDatabase(applicationContext))
 
 
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -81,12 +85,17 @@ class MainActivity : AppCompatActivity(), BuyOrUpgradeDialog.BuyDialogListener {
     override fun onDialogPositiveClick(
         dialog: DialogFragment, collectable: Collectable, action: Action
     ) {
+        val listEnum: MutableList<StatisticEnum> = mutableListOf(StatisticEnum.BUTTONS, StatisticEnum.BUTTON_CONFIRM, StatisticEnum.BUY_WITH_INK)
+
         lifecycleScope.launch(Dispatchers.IO) {
             collectableRepository?.performActionOnCollectable(collectable, action)
+            statisticRepository?.addStats(listOf(StatisticEnum.BUTTONS, StatisticEnum.BUTTON_CONFIRM, StatisticEnum.BUY_WITH_INK))
         }
     }
 
     override fun onDialogNegativeClick(dialog: DialogFragment) {
-
+        lifecycleScope.launch(Dispatchers.IO) {
+            statisticRepository?.addStats(listOf(StatisticEnum.BUTTONS, StatisticEnum.BUTTON_CANCEL))
+        }
     }
 }

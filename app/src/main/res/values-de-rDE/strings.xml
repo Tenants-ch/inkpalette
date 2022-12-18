@@ -31,4 +31,23 @@
     <string name="stats_button_convert">Knopf konvertieren aktiviert</string>
     <string name="stats_buy_with_ink">Gekauft mit Farbe</string>
     <string name="stats_buy_with_coins">Gekauft mit M0nzen</string>
+    <string name="stats_clicked">Statistik angetippt</string>
+    <string name="reset_options">Zurücksetztungseinstellungen</string>
+    <string name="reset_game">Setzte die ganze App zurück</string>
+    <string name="reset_collectables">Setzte die Gesammelten Farben zurück</string>
+    <string name="reset_statistics">Setzte die Statistiken zurück</string>
+    <string name="see_webpages">Besuche unsere Webseite</string>
+    <string name="do_not_touch">Berühre mich nicht</string>
+    <string name="do_not_touch_summary">Mich sollteste du nicht anfassen</string>
+    <string name="stats_touch_clicked">Du hast die verbotene Statistik angefasst</string>
+    <string name="settings_touch_clicked">Du hast die verbotene Einstellunge angefasst</string>
+    <string name="settings_clicked">Du hast die Einstellungen angefasst</string>
+    <string name="open_options">Hier kommst du zu gen gefährlichen Operationen</string>
+    <string name="about">Über das Spiel</string>
+    <string name="developer">Entwickler</string>
+    <string name="profile_name">Profil Name</string>
+    <string name="feedback_summary">Gib Rückmeldung oder schreibe uns wen etwas nicht funktioniert</string>
+    <string name="feedback">Gib Rückmeldung</string>
+    <string name="email_subject">[DE] Farb Palette Rückmeldung</string>
+    <string name="email_text">Hier kannst du uns sagen was wir gut, oder schlecht gemacht haben</string>
 </resources>
