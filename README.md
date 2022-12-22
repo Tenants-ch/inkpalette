@@ -2,6 +2,8 @@
 
 Its a simple game about collecting Ink. If you collected enough Ink of one Color you can unlock the next color.
 
+The Goal is to collect all the Colors and to Upgrade them to the max level. 
+
 If you want to enhance the Color collecting, you can go a level deeper and upgrade all the inner workings of each Color.
 
 If you also want to Upgrade the second level, you can even go one level deeper.
