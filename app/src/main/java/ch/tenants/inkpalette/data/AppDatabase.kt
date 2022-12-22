@@ -13,7 +13,7 @@ import java.util.concurrent.Executors
 
 @Database(
     entities = [CollectableEntity::class, WorkerEntity::class, UpgradeEntity::class, StatisticEntity::class],
-    version = 6, exportSchema = false
+    version = 7, exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract val collectableDao: CollectableDao

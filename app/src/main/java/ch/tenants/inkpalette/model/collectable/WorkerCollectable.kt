@@ -5,6 +5,7 @@ import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import ch.tenants.inkpalette.R
 import ch.tenants.inkpalette.data.entities.WorkerEntity
+import ch.tenants.inkpalette.model.enums.AttributeEnum
 import ch.tenants.inkpalette.model.enums.ColorEnum
 import ch.tenants.inkpalette.model.enums.WorkerEnum
 
@@ -25,7 +26,8 @@ open class WorkerCollectable(
     neededTicksToCollect: Int = 100,
     ticks: Int = 0,
     notCollectedCount: Int = 0,
-    upgrades: List<Collectable> = emptyList()
+    upgrades: List<Collectable> = emptyList(),
+    attributeUpgrade: AttributeEnum
 ) : Collectable(
     id,
     unlocked,
@@ -41,6 +43,7 @@ open class WorkerCollectable(
     neededTicksToCollect,
     ticks,
     notCollectedCount,
+    attributeUpgrade,
     upgrades
 ) {
     override fun getBuyCost(): CostModel {
@@ -86,7 +89,8 @@ open class WorkerCollectable(
             ticks = ticks,
             notCollectedCount = notCollectedCount,
             parentId = parentId,
-            workerEnum = workerEnum
+            workerEnum = workerEnum,
+            attributeUpgrade = attributeUpgrade
         )
     }
 }

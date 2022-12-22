@@ -2,8 +2,9 @@ package ch.tenants.inkpalette.data.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
-import ch.tenants.inkpalette.model.enums.ColorEnum
 import ch.tenants.inkpalette.model.collectable.WorkerCollectable
+import ch.tenants.inkpalette.model.enums.AttributeEnum
+import ch.tenants.inkpalette.model.enums.ColorEnum
 import ch.tenants.inkpalette.model.enums.WorkerEnum
 
 @Entity(tableName = "worker")
@@ -24,6 +25,7 @@ open class WorkerEntity(
     neededTicksToCollect: Int = 10,
     ticks: Int = 0,
     notCollectedCount: Int = 0,
+    attributeUpgrade: AttributeEnum
 ) : CollectableEntity(
     uid = uid,
     quantity = quantity,
@@ -39,6 +41,7 @@ open class WorkerEntity(
     neededTicksToCollect = neededTicksToCollect,
     ticks = ticks,
     notCollectedCount = notCollectedCount,
+    attributeUpgrade = attributeUpgrade
 )
 
 fun WorkerEntity.asDomainModel(): WorkerCollectable {
@@ -58,7 +61,8 @@ fun WorkerEntity.asDomainModel(): WorkerCollectable {
         ticks = ticks,
         notCollectedCount = notCollectedCount,
         workerEnum = workerEnum,
-        parentId = parentId
+        parentId = parentId,
+        attributeUpgrade = attributeUpgrade
     )
 }
 
@@ -83,7 +87,8 @@ fun List<WorkerEntity>.asDomainModel(): List<WorkerCollectable> {
             ticks = it.ticks,
             notCollectedCount = it.notCollectedCount,
             workerEnum = it.workerEnum,
-            parentId = it.parentId
+            parentId = it.parentId,
+            attributeUpgrade = it.attributeUpgrade
         )
     }
 }

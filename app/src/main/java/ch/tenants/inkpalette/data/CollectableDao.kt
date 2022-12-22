@@ -149,7 +149,9 @@ interface CollectableDao {
                     unlocked = color == ColorEnum.YELLOW,
                     totalCollected = 0,
                     quantity = 0,
-                    color = color, section = 1
+                    color = color,
+                    section = 1,
+                    attributeUpgrade= color.attributeUpgrade
                 )
             )
             WorkerEnum.values().forEach { worker ->
@@ -161,7 +163,8 @@ interface CollectableDao {
                         color = color,
                         section = 2,
                         workerEnum = worker,
-                        parentId = colorId.toInt()
+                        parentId = colorId.toInt(),
+                        attributeUpgrade= worker.attributeUpgrade
                     )
                 )
                 UpgradeEnum.values().filter { it.workerEnum == worker }.forEach { upgrade ->
@@ -174,7 +177,8 @@ interface CollectableDao {
                             section = 3,
                             workerEnum = worker,
                             upgradeEnum = upgrade,
-                            parentId = workerEnumId.toInt()
+                            parentId = workerEnumId.toInt(),
+                            attributeUpgrade= worker.attributeUpgrade
                         )
                     )
                 }

@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import ch.tenants.inkpalette.model.collectable.Collectable
+import ch.tenants.inkpalette.model.enums.AttributeEnum
 import ch.tenants.inkpalette.model.enums.ColorEnum
 
 @Entity(tableName = "collectable")
@@ -21,7 +22,8 @@ open class CollectableEntity(
     @ColumnInfo(name = "costToBuy") val costToBuy: Int = 10,
     @ColumnInfo(name = "neededTicksToCollect") val neededTicksToCollect: Int = 10,
     @ColumnInfo(name = "ticks") var ticks: Int = 0,
-    @ColumnInfo(name = "notCollectedCount") var notCollectedCount: Int = 0
+    @ColumnInfo(name = "notCollectedCount") var notCollectedCount: Int = 0,
+    @ColumnInfo(name = "attributeUpgrade") var attributeUpgrade: AttributeEnum
 )
 
 fun CollectableEntity.asDomainModel(): Collectable {
@@ -39,7 +41,8 @@ fun CollectableEntity.asDomainModel(): Collectable {
         costToBuy = costToBuy,
         neededTicksToCollect = neededTicksToCollect,
         ticks = ticks,
-        notCollectedCount = notCollectedCount
+        notCollectedCount = notCollectedCount,
+        attributeUpgrade = attributeUpgrade
     )
 }
 
@@ -63,6 +66,7 @@ fun List<CollectableEntity>.asDomainModel(): List<Collectable> {
             neededTicksToCollect = it.neededTicksToCollect,
             ticks = it.ticks,
             notCollectedCount = it.notCollectedCount,
+            attributeUpgrade = it.attributeUpgrade
         )
     }
 }

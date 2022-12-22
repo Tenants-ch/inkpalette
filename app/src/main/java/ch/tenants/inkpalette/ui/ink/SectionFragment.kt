@@ -79,7 +79,6 @@ class SectionFragment : Fragment() {
 
     }
 
-
     private fun updateCollectable(collectable: Collectable, action: Action) {
         lifecycleScope.launch(Dispatchers.IO) {
             collectableRepository?.updateCollectable(collectable)

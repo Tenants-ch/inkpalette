@@ -3,6 +3,7 @@ package ch.tenants.inkpalette.model.collectable
 import CostModel
 import androidx.navigation.NavController
 import ch.tenants.inkpalette.data.entities.UpgradeEntity
+import ch.tenants.inkpalette.model.enums.AttributeEnum
 import ch.tenants.inkpalette.model.enums.ColorEnum
 import ch.tenants.inkpalette.model.enums.UpgradeEnum
 import ch.tenants.inkpalette.model.enums.WorkerEnum
@@ -25,7 +26,8 @@ class UpgradeCollectable(
     neededTicksToCollect: Int = 100,
     ticks: Int = 0,
     notCollectedCount: Int = 0,
-    upgrades: List<Collectable> = emptyList()
+    upgrades: List<Collectable> = emptyList(),
+    attributeUpgrade: AttributeEnum
 ) : WorkerCollectable(
     id,
     unlocked,
@@ -43,7 +45,8 @@ class UpgradeCollectable(
     neededTicksToCollect,
     ticks,
     notCollectedCount,
-    upgrades
+    upgrades,
+    attributeUpgrade
 ) {
     override fun navigate(navController: NavController) {
         navController.navigate(upgradeEnum.navigation)
@@ -84,7 +87,8 @@ class UpgradeCollectable(
             notCollectedCount = notCollectedCount,
             parentId = parentId,
             workerEnum = workerEnum,
-            upgradeEnum = upgradeEnum
+            upgradeEnum = upgradeEnum,
+            attributeUpgrade = attributeUpgrade
         )
     }
 }

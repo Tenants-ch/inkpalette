@@ -2,8 +2,9 @@ package ch.tenants.inkpalette.data.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
-import ch.tenants.inkpalette.model.enums.ColorEnum
 import ch.tenants.inkpalette.model.collectable.UpgradeCollectable
+import ch.tenants.inkpalette.model.enums.AttributeEnum
+import ch.tenants.inkpalette.model.enums.ColorEnum
 import ch.tenants.inkpalette.model.enums.UpgradeEnum
 import ch.tenants.inkpalette.model.enums.WorkerEnum
 
@@ -26,6 +27,7 @@ class UpgradeEntity(
     neededTicksToCollect: Int = 10,
     ticks: Int = 0,
     notCollectedCount: Int = 0,
+    attributeUpgrade: AttributeEnum
 ) : WorkerEntity(
     uid = uid,
     parentId = parentId,
@@ -43,6 +45,7 @@ class UpgradeEntity(
     neededTicksToCollect = neededTicksToCollect,
     ticks = ticks,
     notCollectedCount = notCollectedCount,
+    attributeUpgrade = attributeUpgrade
 )
 
 fun UpgradeEntity.asDomainModel(): UpgradeCollectable {
@@ -63,7 +66,8 @@ fun UpgradeEntity.asDomainModel(): UpgradeCollectable {
         notCollectedCount = notCollectedCount,
         workerEnum = workerEnum,
         parentId = parentId,
-        upgradeEnum = upgradeEnum
+        upgradeEnum = upgradeEnum,
+        attributeUpgrade = attributeUpgrade
     )
 }
 
@@ -89,7 +93,8 @@ fun List<UpgradeEntity>.asDomainModel(): List<UpgradeCollectable> {
             notCollectedCount = it.notCollectedCount,
             workerEnum = it.workerEnum,
             parentId = it.parentId,
-            upgradeEnum = it.upgradeEnum
+            upgradeEnum = it.upgradeEnum,
+            attributeUpgrade = it.attributeUpgrade
         )
     }
 }

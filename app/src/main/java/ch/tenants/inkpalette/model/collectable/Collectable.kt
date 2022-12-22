@@ -11,6 +11,7 @@ import androidx.navigation.NavController
 import ch.tenants.inkpalette.R
 import ch.tenants.inkpalette.data.entities.CollectableEntity
 import ch.tenants.inkpalette.model.Action
+import ch.tenants.inkpalette.model.enums.AttributeEnum
 import ch.tenants.inkpalette.model.enums.ColorEnum
 
 open class Collectable(
@@ -20,14 +21,15 @@ open class Collectable(
     var quantity: Int = 0,
     var totalCollected: Int = 0,
     val section: Int = 1,
-    val storage: Int = 500,
-    val ration: Int = 1000,
+    val storage: Int = 500,      //storage Upgrade
+    val ration: Int = 1000,      //ratio upgrade
     var level: Int = 1,
-    val intermediateStorage: Int = 10,
+    val intermediateStorage: Int = 10,  // intermediate storage upgrade
     val costToBuy: Int = 10,
-    val neededTicksToCollect: Int = 100,
+    val neededTicksToCollect: Int = 100,  //ticks needed to collect upgrade
     var ticks: Int = 0,
-    var notCollectedCount: Int = 0,
+    var notCollectedCount: Int = 0,        // cost to upgrade upgrade
+    var attributeUpgrade: AttributeEnum,
     var upgrades: List<Collectable> = emptyList()
 ) {
     open fun navigate(navController: NavController) {
@@ -45,7 +47,7 @@ open class Collectable(
 
     fun getProgress(): Int {
         return if (ticks > 0) {
-            val diff: Double = ((neededTicksToCollect.toDouble()) / ticks.toDouble())
+            val diff: Double = ((getNeededTicksWithUpgrades().toDouble()) / ticks.toDouble())
             val progress = 100 / diff
             progress.toInt()
         } else {
@@ -81,12 +83,13 @@ open class Collectable(
         ))
     }
 
-
     private fun generateCostObject(costModel: CostModel): RealCost {
+        var quantity = costModel.quantity - getAttributeLevels(AttributeEnum.UPGRADE_COST)
+        quantity = if (quantity > 0) quantity else 1
         when (costModel) {
             is UpgradeCostModel -> {
                 return UpgradeCost(
-                    quantity = costModel.quantity * level,
+                    quantity = quantity * level,
                     colorEnum = costModel.colorEnum ?: color,
                     workerEnum = costModel.upgradeEnum.workerEnum,
                     upgradeEnum = costModel.upgradeEnum
@@ -94,14 +97,14 @@ open class Collectable(
             }
             is WorkerCostModel -> {
                 return WorkerCost(
-                    quantity = costModel.quantity * level,
+                    quantity = quantity * level,
                     colorEnum = costModel.colorEnum ?: color,
                     workerEnum = costModel.workerEnum
                 )
             }
             else -> {
                 return RealCost(
-                    quantity = costModel.quantity * level,
+                    quantity = quantity * level,
                     colorEnum = costModel.colorEnum ?: color,
                 )
             }
@@ -109,26 +112,45 @@ open class Collectable(
     }
 
     fun getCountDisplay(): String {
-        return "$quantity/$storage"
+        return "$quantity/${getStorageWithUpgrades()}"
     }
 
     fun getNotCollectCountDisplay(): String {
-        return "$notCollectedCount/$intermediateStorage"
+        return "$notCollectedCount/${getIntermediateStorageWithUpgrades()}"
     }
 
     private fun calculateNewState() {
-        if (notCollectedCount >= intermediateStorage) {
-            ticks = neededTicksToCollect
-        } else if (ticks >= neededTicksToCollect) {
+        if (notCollectedCount >= getIntermediateStorageWithUpgrades()) {
+            ticks = getNeededTicksWithUpgrades()
+        } else if (ticks >= getNeededTicksWithUpgrades()) {
             notCollectedCount += level
             ticks = 0
         }
     }
 
+    fun getStorageWithUpgrades(): Int {
+        return storage + (getAttributeLevels(AttributeEnum.STORAGE))
+    }
+
+
+    fun getNeededTicksWithUpgrades(): Int {
+        return neededTicksToCollect - (getAttributeLevels(AttributeEnum.NEEDED_TICKS))
+    }
+
+
+    fun getIntermediateStorageWithUpgrades(): Int {
+        return intermediateStorage + (getAttributeLevels(AttributeEnum.INTERMEDIATE_STORAGE))
+    }
+
+    fun getAttributeLevels(attributeEnum: AttributeEnum): Int {
+        return this.upgrades.filter { it -> it.attributeUpgrade == attributeEnum }
+            .sumOf { it.level }
+    }
+
     fun collect() {
         quantity += notCollectedCount
-        if (quantity > storage) {
-            quantity = storage
+        if (quantity > getStorageWithUpgrades()) {
+            quantity = getStorageWithUpgrades()
         }
         notCollectedCount = 0
     }
@@ -172,7 +194,8 @@ open class Collectable(
             costToBuy = costToBuy,
             neededTicksToCollect = neededTicksToCollect,
             ticks = ticks,
-            notCollectedCount = notCollectedCount
+            notCollectedCount = notCollectedCount,
+            attributeUpgrade = attributeUpgrade
         )
     }
 }
