@@ -1,0 +1,87 @@
+name: state-md-policy
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  enforce-state-md:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Evaluate state.md policy
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euo pipefail
+
+          python - <<'PY'
+          import os, re, subprocess, sys
+
+          base = os.environ['BASE_SHA']
+          head = os.environ['HEAD_SHA']
+          pr_body = os.environ.get('PR_BODY') or ''
+
+          changed = subprocess.check_output([
+              'git', 'diff', '--name-only', f'{base}...{head}'
+          ], text=True).splitlines()
+
+          non_impact_patterns = [
+              r'^README\.md$',
+              r'^LICENSE$',
+              r'^docs/',
+              r'^\.github/',
+              r'^.*\.md$',
+              r'^.*\.rst$',
+              r'^.*\.txt$',
+              r'^.*\.adoc$',
+          ]
+
+          def is_non_impact(path: str) -> bool:
+              return any(re.match(p, path) for p in non_impact_patterns)
+
+          requires_state_update = any(
+              p != 'state.md' and not is_non_impact(p)
+              for p in changed
+          )
+
+          state_updated = 'state.md' in changed
+
+          body_has_decision = 'trigger decision:' in pr_body.lower()
+          body_has_evidence = 'state.md evidence' in pr_body.lower()
+          body_has_exception = 'exception reason:' in pr_body.lower()
+
+          print('Changed files:')
+          for p in changed:
+              print(f' - {p}')
+          print(f'Requires state.md update: {requires_state_update}')
+          print(f'state.md updated: {state_updated}')
+
+          errors = []
+          if not body_has_evidence or not body_has_decision:
+              errors.append('PR description missing state.md evidence block and/or trigger decision line.')
+
+          if requires_state_update and not state_updated:
+              errors.append('state.md must be updated because non-doc/non-meta files changed.')
+
+          if not requires_state_update and not state_updated and not body_has_exception:
+              errors.append('state.md not updated: provide exception reason (docs-only or no-state-impact).')
+
+          if errors:
+              print('\nPolicy check failed:')
+              for e in errors:
+                  print(f' - {e}')
+              sys.exit(1)
+
+          print('\nPolicy check passed.')
+          PY
